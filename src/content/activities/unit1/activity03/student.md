@@ -83,17 +83,83 @@ class Walker {
 }
 ```
 
-### Experimento con el código:
+### Experimento
 
-Comprende el código, entiende lo que pasa y cómo se está aplicando el concepto.
-Luego harás una modificación al código. Te harás esta pregunta ¿Qué pasaría si?
-Trata de lanzar una hipótesis de lo que crees que ocurrirá.
-Realiza la modificación.
-Vas a documentar
-
-## Describe el experimento que vas a realizar.
+Voy a modificar el código para que el tamaño del punto cambie aleatoriamente en cada paso, asignando diferentes colores según el tamaño. Esto permitirá que el caminante deje trazos de tamaños y colores variados, lo que podría generar un patrón visual más dinámico y fácil de identificar.
 
 #### ¿Qué pregunta quieres responder con este experimento?
+- ¿Cómo afecta la variación del tamaño de los puntos y su color a la visibilidad de los diferentes tamaños a lo largo de la caminata aleatoria?
+- ¿Es fácil distinguir entre los diferentes tamaños de puntos en el canvas?
 #### ¿Qué resultados esperas obtener?
+Espero ver una caminata aleatoria con puntos de tres tamaños (1, 2 y 3 píxeles) que sean claramente visibles y diferenciables por su color (rojo, verde y azul). Cada tamaño debería tener su propio color distintivo, lo que permitirá ver la evolución de la caminata de manera más clara.
+
+## Codigo:
+El cambio se realizó en el método show(), añadiendo un tamaño aleatorio para el punto que dibuja el caminante entre 1 y 5.
+
+```js
+let walker;
+
+function setup() {
+  createCanvas(640, 240);
+  walker = new Walker();
+  background(255);
+}
+
+function draw() {
+  for (let i = 0; i < 10; i++) { // Hacer que dé 10 pasos por fotograma
+    walker.step();
+    walker.show();
+  }
+}
+
+class Walker {
+  constructor() {
+    this.x = width / 2; // Inicia en el centro del lienzo
+    this.y = height / 2;
+  }
+
+  show() {
+    const size = random(1, 3); // Tamaño aleatorio entre 1 y 3
+    let col;
+
+    // Asignar un color según el tamaño
+    if (size <= 1.5) {
+      col = color(255, 0, 0); // Rojo para los puntos más pequeños (1 px)
+    } else if (size <= 2.5) {
+      col = color(0, 255, 0); // Verde para los puntos medianos (2 px)
+    } else {
+      col = color(0, 0, 255); // Azul para los puntos más grandes (3 px)
+    }
+
+    stroke(col); // Color del punto
+    strokeWeight(size); // Ajusta el grosor del punto
+    point(this.x, this.y); // Dibuja el punto en la posición actual
+  }
+
+  step() {
+    const choice = floor(random(4)); // Elige una dirección aleatoria
+    if (choice == 0) {
+      this.x++;
+    } else if (choice == 1) {
+      this.x--;
+    } else if (choice == 2) {
+      this.y++;
+    } else {
+      this.y--;
+    }
+    // Limita al caminante dentro del canvas
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
+  }
+}
+```
+
 #### ¿Qué resultados obtuviste?
+ Los puntos de tamaño 1, 2 y 3 píxeles son fácilmente distinguibles por su color (rojo, verde y azul, respectivamente). La caminata aleatoria ahora se representa con diferentes colores que corresponden a los tamaños de los puntos, lo que permite observar claramente cómo el caminante se desplaza a través del lienzo.
+
 #### ¿Qué aprendiste de este experimento?
+Aprendí que al combinar variación en el tamaño y el color de los puntos, se mejora significativamente la visibilidad de los diferentes pasos en la caminata aleatoria. Esta modificación hace que sea mucho más fácil rastrear el movimiento del caminante, al mismo tiempo que agrega un componente visual interesante que hace que el experimento sea más dinámico y creativo. Además, experimenté cómo el tamaño y el color pueden influir en la percepción visual de una simulación interactiva.
+
+#### Resultado:
+
+![image](https://github.com/user-attachments/assets/e4db84c9-36bd-47de-af69-209b957d39b7)
