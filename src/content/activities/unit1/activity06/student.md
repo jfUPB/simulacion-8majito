@@ -11,7 +11,7 @@ El Lévy flight es especialmente útil en modelos de búsqueda y exploración do
 - En física y estudios de difusión, como el movimiento de partículas en medios heterogéneos.
 
 #### Código de la simulación.
-
+```js
 let x, y;
 
 function setup() {
@@ -61,8 +61,7 @@ function drawHeart(x, y) {
   bezierVertex(x + 30, y - 20, x + 10, y - 20, x, y);
   endShape(CLOSE);
 }
-
-
+```
 #### Captura de pantalla.
 
 ![image](https://github.com/user-attachments/assets/ad79ed65-54c7-48ef-a583-92e4723ec71a)
