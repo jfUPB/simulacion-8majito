@@ -47,4 +47,4 @@ class Walker {
 }
 ```
 
-![image](https://github.com/user-attachments/assets/23686567-95ba-482b-b863-11cf6aada059)
+![image](../../../../assets/majo4.png)
