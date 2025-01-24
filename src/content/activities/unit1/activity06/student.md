@@ -64,4 +64,4 @@ function drawHeart(x, y) {
 ```
 #### Captura de pantalla.
 
-![image](https://github.com/user-attachments/assets/ad79ed65-54c7-48ef-a583-92e4723ec71a)
+![image](../../../../assets/majo06.png)
