@@ -1,5 +1,5 @@
 #### Código del ejemplo
-
+```js
 let values = [];
 
 function setup() {
@@ -38,8 +38,7 @@ function draw() {
     values.shift();
   }
 }
-
-
+```
 #### Captura de pantalla
 
 ![image](https://github.com/user-attachments/assets/e64c9d09-4a96-4d67-8837-016925e85b71)
