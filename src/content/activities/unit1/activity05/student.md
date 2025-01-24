@@ -41,7 +41,7 @@ function draw() {
 ```
 #### Captura de pantalla
 
-![image](https://github.com/user-attachments/assets/e64c9d09-4a96-4d67-8837-016925e85b71)
+![image](../../../../assets/majo05.png)
 
 #### Una breve explicación de cómo se refleja la distribución normal en la visualización
 
