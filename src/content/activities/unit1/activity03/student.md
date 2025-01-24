@@ -162,4 +162,4 @@ Aprendí que al combinar variación en el tamaño y el color de los puntos, se m
 
 #### Resultado:
 
-![image](https://github.com/user-attachments/assets/e4db84c9-36bd-47de-af69-209b957d39b7)
+![image](../../../../assets/majo3.png)
