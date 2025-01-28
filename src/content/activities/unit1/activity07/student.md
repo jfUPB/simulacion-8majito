@@ -92,4 +92,4 @@ function dibujarEtiquetas() {
 ```
 #### Captura
 
-![image](https://github.com/user-attachments/assets/1b1c64ce-cfee-4c04-ad65-f51f0367dca3)
+1. ![image](../../../../assets/Actividad07.png)
