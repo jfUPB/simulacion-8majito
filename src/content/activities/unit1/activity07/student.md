@@ -18,9 +18,9 @@ En el código, use dos tipos de ruido para generar variaciones en la altura de l
 **1. Ruido Perlin:**
 
 En la función dibujarRuidoPerlin(), utilice el ruido Perlin para generar una línea suave y fluida. El ruido Perlin se utiliza para determinar las variaciones en el eje Y de cada punto, generando un cambio gradual entre los puntos.
-
+```js
 let y = noise(i * scale) * 150 + yOffset;
-
+```
 - *noise(i * scale):* Aquí utilice la función noise() de p5.js, que genera valores continuos (sin saltos abruptos). Al multiplicar i (el índice del punto) por scale (0.01), controlamos la "resolución" de la variación del ruido. Un valor pequeño de scale como este hace que las variaciones sean suaves y amplias.
 - **150:* Escala el valor generado por noise() para aumentar la amplitud de las variaciones en el eje Y. El rango de variación se extiende entre 0 y 150 píxeles verticalmente.
 - *+ yOffset:* Desplaza la línea en el eje Y, asegurando que la línea no quede demasiado cerca de los bordes del canvas.
@@ -29,14 +29,14 @@ Esta variación suave se genera porque el ruido Perlin produce cambios continuos
 **2. Ruido Aleatorio:**
 
 En la función dibujarRuidoAleatorio(), se genera una variación más brusca usando valores aleatorios. Aquí, los puntos en la línea se colocan en posiciones Y aleatorias dentro de un rango determinado.
-
+```js
 let y = random(height / 4, (3 * height) / 4);
-
+```
 - *random(height / 4, (3 * height) / 4):* En lugar de usar noise(), aquí se usa la *función random()* para generar valores completamente aleatorios. Estos valores se ubican entre height / 4 y (3 * height) / 4, lo que significa que los puntos se distribuyen de manera aleatoria dentro de la mitad del canvas verticalmente.
 - Como el ruido aleatorio no tiene en cuenta las posiciones anteriores, genera un comportamiento más "caótico" y con saltos bruscos entre los valores de y.
 
 #### Código
-
+```js
 let numPoints = 500; // Número de puntos en la línea
 let scale = 0.01; // Escala del ruido Perlin
 let yOffset = 150; // Posición base en Y
@@ -89,7 +89,7 @@ function dibujarEtiquetas() {
   text("Ruido de Perlin (suave)", 20, yOffset - 10);
   text("Ruido aleatorio (brusco)", width / 2 + 20, yOffset - 10);
 }
-
+```
 #### Captura
 
 ![image](https://github.com/user-attachments/assets/1b1c64ce-cfee-4c04-ad65-f51f0367dca3)
