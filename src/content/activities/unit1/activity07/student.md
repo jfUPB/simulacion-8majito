@@ -92,4 +92,4 @@ function dibujarEtiquetas() {
 ```
 #### Captura
 
-1. ![image](../../../../assets/Actividad07.png)
+ ![image](../../../../assets/Actividad07.png)
