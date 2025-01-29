@@ -28,14 +28,13 @@
       { "nombre": "actividad06", "estado": "No iniciada", "fase": "seek", "aprobado": "no" },
       { "nombre": "actividad07", "estado": "No iniciada", "fase": "seek", "aprobado": "no" },
       { "nombre": "actividad08", "estado": "No iniciada", "fase": "seek", "aprobado": "no" },
-      { "nombre": "actividad09", "estado": "No iniciada", "fase": "apply", "aprobado": "no" },
+      { "nombre": "actividad09", "estado": "No iniciada", "fase": "seek", "aprobado": "no" },
       { "nombre": "actividad10", "estado": "No iniciada", "fase": "apply", "aprobado": "no" },
       { "nombre": "actividad11", "estado": "No iniciada", "fase": "apply", "aprobado": "no" },
-      { "nombre": "actividad12", "estado": "No iniciada", "fase": "apply", "aprobado": "no" },
+      { "nombre": "actividad12", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" },
       { "nombre": "actividad13", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" },
       { "nombre": "actividad14", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" },
-      { "nombre": "actividad15", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" },
-      { "nombre": "actividad16", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" }
+      { "nombre": "actividad15", "estado": "No iniciada", "fase": "reflect", "aprobado": "no" }
     ]
   },
   {

@@ -8,8 +8,18 @@ import unidades from '../../activities/unidades.json';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción
+
+En esta unidad, te sumergirás en el fascinante mundo de los vectores, las fuerzas invisibles 
+que dan vida a tus creaciones digitales. Experimentarás con conceptos matemáticos y físicos, 
+como velocidad y aceleración, para controlar el movimiento en tus proyectos interactivos. 
+Aprenderás a manipular vectores en p5.js, pero recuerda que este conocimiento es aplicable 
+a cualquier lenguaje de programación.
 
 ## ¿Qué aprenderás en esta unidad?
+
+En esta fase, vas a revisar algunos conceptos básicos de vectores que ya conoces tu paso 
+por ciencia básica.
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -23,6 +33,11 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Investigación
 
+¡Es hora de explorar! En esta fase, profundizarás en la teoría y práctica de los vectores a 
+través de la lectura del [capítulo 1](https://natureofcode.com/vectors/) del libro "The Nature of Code". 
+Realizarás experimentos, analizarás ejemplos y te familiarizarás con las diferentes funciones de p5.js
+ para manipular vectores.
+
 {unit.actividades
   .filter(act => act.fase === "seek")
   .map(act => (
@@ -35,6 +50,9 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Aplicación
 
+En esta fase, aplicarás tus conocimientos sobre vectores para crear arte generativo algorítmico. 
+Pondrás en práctica los conceptos aprendidos en las fases anteriores.
+
 {unit.actividades
   .filter(act => act.fase === "apply")
   .map(act => (
@@ -46,6 +64,9 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 }
 
 ## Consolidación y matacognión
+
+En esta fase final, reflexionarás sobre tu proceso de aprendizaje. Analizarás tus logros, 
+identificarás áreas de mejora y consolidarás tu comprensión de los vectores y su aplicación.
 
 {unit.actividades
   .filter(act => act.fase === "reflect")
