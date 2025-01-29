@@ -110,7 +110,7 @@ function keyPressed() {
 #### Captura del contenido generado.
 ![image](https://github.com/user-attachments/assets/b73332f7-6382-4d81-acc9-befb1fcd2078)
 
-![image](https://github.com/user-attachments/assets/4d015fd0-ee81-45bf-b508-dfda8a3ec1c7)
+![image](../../../../assets/Actividad09-2.png)
 
 ![image](https://github.com/user-attachments/assets/4b1a0812-47eb-4712-a4cc-8bead3144cb9)
 
