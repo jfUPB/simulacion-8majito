@@ -112,7 +112,7 @@ function keyPressed() {
 
 ![image](../../../../assets/Actividad09-2.png)
 
-![image](https://github.com/user-attachments/assets/4b1a0812-47eb-4712-a4cc-8bead3144cb9)
+![image](../../../../assets/Actividad09-3.png)
 
 
 #### Cambios
