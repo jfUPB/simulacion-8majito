@@ -108,7 +108,7 @@ function keyPressed() {
 }
 ```
 #### Captura del contenido generado.
-![image](https://github.com/user-attachments/assets/b73332f7-6382-4d81-acc9-befb1fcd2078)
+![image](../../../../assets/Atividad09-1.png)
 
 ![image](../../../../assets/Actividad09-2.png)
 
