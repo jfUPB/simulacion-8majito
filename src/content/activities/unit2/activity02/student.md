@@ -7,7 +7,7 @@ Cuando el caminante elige una dirección, vamos a sumarle un vector de desplazam
 - **Actualización de la posición:**
 En lugar de modificar this.x y this.y por separado, actualicé el vector de posición sumando un nuevo vector de acuerdo a la dirección elegida.
 
-
+```js
 let walker;
 
 function setup() {
@@ -23,20 +23,20 @@ function draw() {
 
 class Walker {
   constructor() {
-    // Inicializamos el vector de posición en el centro del lienzo
+    // Inicialice el vector de posición en el centro del lienzo
     this.position = createVector(width / 2, height / 2);
   }
 
   show() {
     stroke(0);
-    point(this.position.x, this.position.y); // Dibujamos el punto usando el vector
+    point(this.position.x, this.position.y); // Dibuje el punto usando el vector
   }
 
   step() {
     // Elegimos una dirección aleatoria
     const choice = floor(random(4));
 
-    let step = createVector(0, 0); // Creamos un vector de paso vacío
+    let step = createVector(0, 0); // Cree un vector de paso vacío
 
     if (choice == 0) {
       step.x = 1; // Movimiento a la derecha
@@ -48,7 +48,8 @@ class Walker {
       step.y = -1; // Movimiento hacia arriba
     }
 
-    // Sumamos el vector de paso a la posición actual
+    // Sume el vector de paso a la posición actual
     this.position.add(step);
   }
 }
+```
