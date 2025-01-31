@@ -2,7 +2,7 @@
 -  método toString() de la clase p5.Vector para imprimir el vector en la consola.
 
 #### Código 
-
+```js
 let position;
 
 function setup() {
@@ -19,17 +19,15 @@ function playingVector(v) {
 
 function draw() {
     background(220);  // Establece un fondo gris
-    console.log("Only once");  // Imprime "Only once" en la consola
-    // Si quieres ver el cambio visualmente, puedes agregar esto:
-    // ellipse(posicion.x, posicion.y, 10, 10);  // Dibuja un círculo en (20, 30)
+    console.log("Only once");  // Imprime "Only once" en la consola, solo se ve una vez 
 }
-
+```
 #### ¿Qué resultado esperas obtener?
-
+No lo se, según lo que se dice con las funciones console.log() y print(), si utilizamos esto me imagino que deberá imprimir mensajes en la consola del navegador. 
 #### ¿Qué resultado obtuviste?
 
 #### Recuerda los conceptos de paso por valor y paso por referencia en programación. Muestra ejemplos de este concepto en javascript.
 
 #### ¿Qué tipo de paso se está realizando en el código?
 
-#### ¿Qué aprendiste
+#### ¿Qué aprendiste?
