@@ -4,7 +4,7 @@
 
 Cada vector tiene dos componentes, una x y una y. Para sumar los dos vectores, sume los componentes x y para crear un nuevo vector. 
 
-![image](https://github.com/user-attachments/assets/15b46ff8-bcf0-47ba-a065-61df42322fa5)
+![image](../../../../assets/SumaVectores.png)
 
 **Propiedades de suma con vectores** 
 La suma con vectores sigue las mismas reglas algebraicas que con los números reales.
