@@ -23,11 +23,46 @@ function draw() {
 }
 ```
 #### ¿Qué resultado esperas obtener?
-No lo se, según lo que se dice con las funciones console.log() y print(), si utilizamos esto me imagino que deberá imprimir mensajes en la consola del navegador. 
+
+No lo se, según lo que se dice con las funciones console.log() y print(), si utilizamos esto me imagino que deberá imprimir mensajes en la consola del navegador, que sería Only once.
+
 #### ¿Qué resultado obtuviste?
+- Obtuve en la consola un Only once
+- Un lienzo gris de 400 x 400
+![image](https://github.com/user-attachments/assets/e2d2f2ab-88bb-4a21-858e-163ad7012d24)
 
 #### Recuerda los conceptos de paso por valor y paso por referencia en programación. Muestra ejemplos de este concepto en javascript.
 
+**Paso por valor:** Ocurre cuando se pasan tipos de datos primitivos (números, cadenas, booleanos, etc.). Se crea una copia del valor original y cualquier cambio dentro de la función no afecta la variable original.
+
+```js
+let a = 10;
+let b = a; // Se copia el valor de a en b
+b = 20; // Modificar b NO afecta a a
+
+console.log(a); // 10
+console.log(b); // 20
+```
+**Paso por referencia:** Ocurre cuando pasamos objetos, arreglos o vectores (p5.Vector). En este caso, se pasa una referencia, lo que significa que cualquier modificación dentro de una función afectará el objeto original.
+
+```js
+let vectorA = createVector(5, 10);
+let vectorB = vectorA; // Ambos apuntan al mismo objeto
+vectorB.x = 20; // Modifica el objeto original
+
+console.log(vectorA.toString()); // "p5.Vector { x: 20, y: 10, z: 0 }"
+console.log(vectorB.toString()); // "p5.Vector { x: 20, y: 10, z: 0 }"
+```
 #### ¿Qué tipo de paso se está realizando en el código?
 
+El paso que se realizo en el codigo fue **paso por referencia**. Esto es porque los objetos como los vectores en JavaScript se pasan por referencia, no por valor. Cuando pasas posicion a la función playingVector(), la función modifica directamente las propiedades x y y del vector original, no una copia de él.
+
+```js
+let posicion = createVector(6, 9);
+playingVector(posicion);
+```
 #### ¿Qué aprendiste?
+- El paso de objetos (como p5.Vector) en JavaScript se hace por referencia, lo que significa que cualquier cambio dentro de una función o modificación directa de ese objeto afecta a la variable original.
+- El uso de toString() en un objeto p5.Vector nos permite ver su contenido en formato de texto y verificar cómo se comportan las modificaciones.
+- noLoop(); en setup() detiene la ejecución continua de draw(), haciendo que los comandos dentro de draw() se ejecuten solo una vez.
+- console.log() y print() nos ayudan a depurar el código imprimiendo valores en la consola del navegador.
