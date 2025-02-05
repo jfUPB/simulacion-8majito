@@ -3,7 +3,7 @@
 **Mag**
 - Calcula la magnitud (longitud) del vector.
 - Utilice mag() para calcular la magnitud de un vector 2D utilizando componentes como en .mag(x, y)
-Formula: ![image](https://github.com/user-attachments/assets/3c299151-3370-4f11-a2b9-1802b7e44ccc)
+Formula: ![image](../../../../assets/mag.png)
 - Esto nos dice qué tan "largo" es el vector en el espacio.
   
 **magSq**
