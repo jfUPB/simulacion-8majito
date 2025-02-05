@@ -1,3 +1,5 @@
+### Codigo de analisis:
+```js
 function setup() {
     createCanvas(100, 100);
 }
@@ -39,7 +41,7 @@ function drawArrow(base, vec, myColor) {
     
     pop();
 }
-
+```
 
 #### El código que genera el resultado propuesto.
 - Agrande el canvas a 400x400
@@ -48,15 +50,9 @@ function drawArrow(base, vec, myColor) {
 - Usé p5.Vector.add(v0, v1) para mover el punto de origen de la flecha verde correctamente, de modo que esta se conecte a las otras flechas.
 - Dibujo la flecha
 - Añadí suavizado de movimiento: En lugar de incrementar t con un valor constante (t += 0.01),use lerp() para que fuera mas fluida y controlada para suavizar el movimiento.
-- Usé interpolación de colores: lerpColor(), podrías cambiar el color de la flecha morada conforme se mueve de v1 a v2 para que la flecha se "despinte" o "cambie de color" durante su movimiento.
-Ciclo o rebote de la animación:
-
-En lugar de simplemente reiniciar la animación cuando t llega a 1, podrías hacer que la animación rebote de vuelta, creando un movimiento de ida y vuelta.
-  
-function setup() {
-    createCanvas(400, 400);
-}
-
+- Rebote de la animación: Implementamos un rebote de la flecha morada utilizando la variable t para controlar su interpolación, y cambiamos la dirección de la animación cuando alcanza los valores 0 o 1.
+-Interapolarmos colores con Lerpcolor: 
+```js
 let t = 0;  // Controlador de la interpolación
 let direction = 1; // Dirección de la animación (1 = avanzando, -1 = retrocediendo)
 
@@ -70,29 +66,43 @@ function draw() {
     let v0 = createVector(30, 50);
     let v1 = createVector(300, 0);
     let v2 = createVector(0, 300);
-
-    // Interpolación de la flecha morada entre v1 y v2
+  
+    // Calcula la interpolación entre v1 y v2 con t variando de 0 a 0.99
     let v3 = p5.Vector.lerp(v1, v2, t);
   
-    // Calcula el vector entre v1 y v2 para la flecha verde
+    // Calcula los vectores entre v1 y v2 (verde)
     let vGreen = p5.Vector.sub(v2, v1);
+  
+    // Colores a interpolar
+    let redColor = color(255, 0, 0); // Rojo
+    let purpleColor = color(128, 0, 128); // Morado
+    let blueColor = color(0, 0, 255); // Azul
+
+    // Interpolación de colores
+    let currentColor;
+    if (t < 0.5) {
+        // De rojo a morado
+        currentColor = lerpColor(redColor, purpleColor, t * 2); // Multiplicamos por 2 para que el cambio ocurra más rápido en la primera mitad
+    } else {
+        // De morado a azul
+        currentColor = lerpColor(purpleColor, blueColor, (t - 0.5) * 2); // Multiplicamos por 2 para que el cambio ocurra más rápido en la segunda mitad
+    }
 
     // Dibuja las flechas
-    drawArrow(v0, v1, 'red');  // Flecha roja de v0 a v1
-    drawArrow(v0, v2, 'blue'); // Flecha azul de v0 a v2
-    drawArrow(v0, v3, 'purple'); // Flecha morada que se mueve
+    drawArrow(v0, v1, 'red');   // Flecha roja de v0 a v1
+    drawArrow(v0, v2, 'blue');  // Flecha azul de v0 a v2
+    drawArrow(v0, v3, currentColor); // Flecha morada con color interpolado
     drawArrow(p5.Vector.add(v0, v1), vGreen, 'green'); // Flecha verde de v1 a v2
 
-    // Actualiza t, el valor de interpolación, para mover la flecha
+      // Actualiza t, el valor de interpolación, para mover la flecha
     t += 0.01 * direction;
 
     // Cambia la dirección cuando t llegue a 0 o 1
     if (t >= 1 || t <= 0) {
-        direction *= -1;  // Cambia la dirección del movimiento
+        direction *= -1;  
     }
 }
 
-// Función para dibujar las flechas
 function drawArrow(base, vec, myColor) {
     push();
     stroke(myColor);
@@ -106,8 +116,6 @@ function drawArrow(base, vec, myColor) {
     triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
     pop();
 }
-
-
-
+```
 #### ¿Cómo funciona lerp() y lerpColor().
 #### ¿Cómo se dibuja una flecha usando drawArrow()?
