@@ -26,7 +26,7 @@ Formula:
 - La versión estática de , como en , devuelve un nuevo p5. Vector y no cambia el original.normalize()p5.Vector.normalize(v).
 - Para normalizar un vector, se divide cada componente entre su magnitud:
   
-  ![image](https://github.com/user-attachments/assets/23ca19ac-383f-413f-a192-8693481bc510)
+  ![image](../../../../assets/Normalize.png)
 
 
 #### Te encuentras con un periodista en la calle y te pregunta ¿Para qué sirve el método dot()? ¿Qué le responderías en un frase?
