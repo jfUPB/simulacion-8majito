@@ -92,11 +92,13 @@ Utilice dist() para calcular la distancia entre puntos utilizando coordenadas co
 
 *Ejemplo:*
 
-Si un vector es (3,4), al normalizarlo se convertirá en (~0.6, ~0.8), pero seguirá apuntando en la misma dirección.
+Si un vector es (3,4), al normalizarlo se convertirá en (~0.6, ~0.8), pero seguirá apuntando en la misma dirección
+
+```js
 let v = createVector(3, 4);
 v.normalize();
 console.log(v);  // Ahora su magnitud es 1
-
+```
 
 **Límit**
 - Si un vector es demasiado grande, limit() lo reduce a un máximo permitido, limita la magnitud de un vector a un valor máximo.
@@ -106,7 +108,8 @@ console.log(v);  // Ahora su magnitud es 1
 *Ejemplo:*
 
 Si un vector tiene magnitud 10 y usamos limit(5), su tamaño bajará a 5, pero mantendrá la dirección.
-
+```js
   let v = createVector(10, 10);
 v.limit(5);
 console.log(v);  // Su magnitud no será mayor a 5
+```
