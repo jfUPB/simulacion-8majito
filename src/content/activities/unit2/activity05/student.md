@@ -118,4 +118,39 @@ function drawArrow(base, vec, myColor) {
 }
 ```
 #### ¿Cómo funciona lerp() y lerpColor().
+
+**lerp()**
+
+- Es una función de interpolación lineal que se utiliza para calcular un valor intermedio entre dos números. Se expresa como lerp(start, stop, amt), donde:
+- start: El valor de inicio (el valor desde el cual se empieza).
+- stop: El valor final (el valor al cual se quiere llegar).
+- amt: Un número entre 0 y 1 que representa la cantidad de interpolación entre el valor de inicio y el valor final. Si amt = 0, el valor es igual a start; si amt = 1, el valor es igual a stop; valores intermedios producen valores interpolados.
+- 
+En el contexto de los vectores, como hicimos en el código, lerp() calcula un punto intermedio entre dos vectores. P5.Vector.lerp(v1, v2, t) nos da un vector en la línea que conecta v1 y v2, dependiendo de la proporción de t. Cuando t varía entre 0 y 1, el vector se mueve gradualmente de v1 a v2.
+
+**lerpColor():**
+
+lerpColor() es similar a lerp(), pero en lugar de trabajar con números, trabaja con colores. La función se usa de la forma lerpColor(color1, color2, amt), donde:
+
+- color1: El primer color de inicio.
+- color2: El color final al que quieres llegar.
+- amt: La cantidad de interpolación, que también varía entre 0 y 1. Cuando amt = 0, el color será igual a color1, y cuando amt = 1, el color será igual a color2. Los valores intermedios crean un gradiente suave entre los dos colores.
+  
+En el código, usé lerpColor() para cambiar el color de la flecha morada, pasando de rojo a morado y luego de morado a azul, dependiendo del valor de t.
+
 #### ¿Cómo se dibuja una flecha usando drawArrow()?
+
+**drawArrow():**
+
+Es una función personalizada que dibuja una flecha en el lienzo. Se usa de la siguiente forma: drawArrow(base, vec, myColor), donde:
+
+- base: El punto de inicio de la flecha (un vector). Es el punto desde donde la flecha comienza a dibujarse.
+- vec: El vector que define la dirección y magnitud de la flecha. Este vector determina hacia dónde apunta la flecha y cuánto mide.
+- myColor: El color de la flecha. Se pasa como un valor de color (por ejemplo, color(255, 0, 0) para rojo).
+- push() y pop(): Se usan para guardar y restaurar el estado de las transformaciones, como la posición y rotación, para que no afecten a otros dibujos.
+- translate(base.x, base.y): Desplaza el origen del sistema de coordenadas a las coordenadas del vector base.
+- line(0, 0, vec.x, vec.y): Dibuja una línea desde el origen (0, 0) hasta las coordenadas del vector vec que define la dirección y magnitud de la flecha.
+- rotate(vec.heading()): Rota el sistema de coordenadas para que la línea se dibuje en la dirección correcta.
+- triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0): Dibuja el triángulo de la punta de la flecha, ubicado en la dirección final del vector, para representar la punta de la flecha.
+  
+Esto permite crear flechas que se dibujan con el color y la orientación que definimos, adaptándose a las coordenadas de los vectores que se pasan como argumentos.
