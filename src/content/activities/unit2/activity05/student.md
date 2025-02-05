@@ -117,6 +117,8 @@ function drawArrow(base, vec, myColor) {
     pop();
 }
 ```
+
+src/assets/Grabación 2025-02-05 112928.gif
 #### ¿Cómo funciona lerp() y lerpColor().
 
 **lerp()**
