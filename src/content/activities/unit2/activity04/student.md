@@ -8,7 +8,7 @@ Formula: ![image](../../../../assets/mag.png)
   
 **magSq**
 - Calcula la magnitud (longitud) del vector al cuadrado.
-  Formula: ![image](https://github.com/user-attachments/assets/f9db1239-1a84-410c-b208-e613bf0b6a20)
+  Formula: ![image](../../../../assets/magsq.png)
 - .magSq() calcula la magnitud al cuadrado, sin aplicar la raíz cuadrada.
 
 - La diferencia es que magSq() no usa la raíz cuadrada, lo que lo hace más eficiente.
