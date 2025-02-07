@@ -8,8 +8,25 @@ import unidades from '../../activities/unidades.json';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción
+
+En esta unidad, explorarás el concepto de fuerzas y cómo se aplican en la 
+creación de sistemas interactivos dinámicos. Partiendo de la manipulación de 
+la aceleración vista en la unidad anterior, aprenderás a utilizar las leyes 
+de Newton para simular el movimiento de objetos en un entorno virtual. A 
+través de ejercicios prácticos, comprenderás cómo las fuerzas influyen en la 
+aceleración, velocidad y posición de los elementos visuales, y cómo modelar 
+diferentes tipos de fuerzas, incluyendo la fricción, la resistencia y la 
+gravedad. Además, explorarás la narrativa como un elemento clave para dar 
+sentido y propósito a las interacciones entre los elementos de la simulación. 
+Finalmente, integrarás la interactividad del usuario para enriquecer la 
+experiencia y el control sobre el sistema.
 
 ## ¿Qué aprenderás en esta unidad?
+
+En esta fase inicial, establecerás las bases para comprender las fuerzas 
+en sistemas interactivos. Despertarás la curiosidad y establecerás conexiones 
+con conocimientos previos.
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -23,6 +40,10 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Investigación
 
+En esta fase, profundizarás en la comprensión de las leyes de Newton y cómo se 
+aplican en la simulación de fuerzas. Analizarás ejemplos de código y resolverás 
+problemas para afianzar el conocimiento.
+
 {unit.actividades
   .filter(act => act.fase === "seek")
   .map(act => (
@@ -35,6 +56,9 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Aplicación
 
+En esta fase, aplicarás los conceptos aprendidos para crear 
+simulaciones interactivas que involucren diferentes tipos de fuerzas.
+
 {unit.actividades
   .filter(act => act.fase === "apply")
   .map(act => (
@@ -46,6 +70,9 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 }
 
 ## Consolidación y matacognión
+
+En esta fase final, reflexionarás sobre el proceso de aprendizaje y 
+consolidarás los conocimientos adquiridos.
 
 {unit.actividades
   .filter(act => act.fase === "reflect")
