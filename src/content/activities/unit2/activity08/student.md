@@ -148,7 +148,4 @@ class Mover {
   }
 }
 ```
-![image](https://github.com/user-attachments/assets/07b46b71-217a-4044-9115-d796daa30542)
-
-
-![image](../../../../)
+![image](../../../../assets/Act8U2.png)
