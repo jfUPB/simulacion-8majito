@@ -68,4 +68,4 @@ function draw() {
   mover.display();// Dibuja el objeto en la nueva posición
 }
 ```
-![image](../../../../assets/Act6U2.gif)
+![image](../../../../assets/Act7U2.gif)
