@@ -77,6 +77,34 @@ function drawArrow(base, vec, myColor) {
     pop();
 }
 ```
-src/assets/Act6U2.gif
+![image](../../../../assets/Act6U2.gif)
 
 #### Explica cómo solucionaste el problema
+
+**1. Cambio de la base de las flechas usando el mouse**
+
+- Antes, la base de las flechas estaba en una posición fija (v0 = createVector(30, 50)), pero tenía que moverse según el mouse.
+- Se usa mouseX y mouseY para definir la nueva base
+
+```js
+let baseX = constrain(mouseX, 0, width);
+let baseY = constrain(mouseY, 0, height);
+let base = createVector(baseX, baseY);
+```
+
+**2. Escalado de los vectores con el mouse**
+
+- Creé un factor de escala basado en mouseX, para hacer que los vectores cambien de tamaño dinámicamente
+  
+```js
+let scaleFactor = constrain(map(mouseX, 0, width, 0.5, 1.5), 0.5, 1.5);
+```
+- map() toma el valor de mouseX y lo convierte en un rango de 0.5 a 1.5 para evitar que los vectores sean demasiado pequeños o grandes.
+
+**3. Límites para que los vectores no se salieran del canvas**
+
+- Utilicé .limit() a los vectores v1 y v2 para asegurarme de que no crecieran más allá del borde de canvas:
+```js
+v1.limit(width - baseX);
+v2.limit(height - baseY);
+```
