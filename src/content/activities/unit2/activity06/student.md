@@ -77,6 +77,6 @@ function drawArrow(base, vec, myColor) {
     pop();
 }
 ```
-
+src/assets/Act6U2.gif
 
 #### Explica cómo solucionaste el problema
