@@ -148,3 +148,21 @@ class Mover {
 - La aceleración se establece con setMag(0.1), lo que significa que siempre será una fuerza constante, pero en la dirección del mouse.
 - La velocidad aumenta en la dirección del mouse y se limita a 5 para evitar que sea demasiado rápida.
 - Si la bola choca con los bordes, se rebota.
+  
+#### Explicación frase
+
+***The goal for programming motion is to come up with an algorithm for calculating acceleration and then let the trickle-down effect work its magic.
+La frase dice que el objetivo al programar el movimiento es encontrar un algoritmo para calcular la aceleración, y luego dejar que el "trickle-down effect" haga su magia.***
+
+¿Qué significa esto en nuestros experimentos?
+- Primero definimos cómo cambia la aceleración (constante, aleatoria o dirigida al mouse).
+- Luego, esa aceleración afecta la velocidad (hace que aumente o cambie).
+- Finalmente, la velocidad modifica la posición del objeto.
+
+Este es el "trickle-down effect" → La aceleración genera cambios en la velocidad y estos afectan el movimiento.
+
+Los experimentos lo demostraron:
+- Con aceleración constante → La bola se iba moviendo cada vez más rápido.
+- Con aceleración aleatoria → La bola cambiaba de dirección de manera errática.
+
+La clave en la animación de movimiento no es solo la velocidad, sino cómo se calcula y aplica la aceleración. 
