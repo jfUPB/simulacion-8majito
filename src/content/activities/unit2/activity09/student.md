@@ -1,7 +1,7 @@
 #### Experimento 
 
 **Aceleración constante.**
-
+```js
 let mover;
 
 function setup() {
@@ -43,12 +43,12 @@ class Mover {
     circle(this.position.x, this.position.y, 20); // Dibuja la bola
   }
 }
-
+```
 
 La aceleración constante hace que la velocidad se incremente progresivamente, lo que provoca un movimiento cada vez más rápido. Al chocar con los bordes, la dirección de la velocidad se invierte.
 
 **Aceleración aleatoria.**
-
+```js
 let mover;
 
 function setup() {
@@ -91,15 +91,13 @@ class Mover {
     circle(this.position.x, this.position.y, 20);
   }
 }
-
-
-
+```
 La aceleración aleatoria cambia en cada frame, lo que hace que la dirección del movimiento sea impredecible. Esto imita el comportamiento de partículas en un fluido o incluso el movimiento de algunas bacterias.
 - Cada frame, la aceleración cambia aleatoriamente en un pequeño rango.
 - La velocidad se ajusta con la aceleración, causando que la bola se mueva de forma errática.
 - El objeto rebota en los bordes, invirtiendo su dirección.
 **Aceleración hacia el mouse.**
-
+```js
 let mover;
 
 function setup() {
@@ -145,3 +143,8 @@ class Mover {
     circle(this.position.x, this.position.y, 20);
   }
 }
+```
+- Se calcula un vector desde la bola hasta el mouse con p5.Vector.sub(mouse, this.position).
+- La aceleración se establece con setMag(0.1), lo que significa que siempre será una fuerza constante, pero en la dirección del mouse.
+- La velocidad aumenta en la dirección del mouse y se limita a 5 para evitar que sea demasiado rápida.
+- Si la bola choca con los bordes, se rebota.
