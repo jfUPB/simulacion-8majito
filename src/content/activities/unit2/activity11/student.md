@@ -1,52 +1,99 @@
+#### Código de la aplicación.
 let particles = [];
-let numParticles = 300;
-let starryNight;
-
-function preload() {
-  starryNight = loadImage('starry_night.jpg'); // Asegúrate de que la imagen esté en la carpeta del proyecto
-}
+let numParticles = 6000;
+let center;
+let colors;
+let a = 0;
+let b = 0.4;
+let prevMouseX;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(600, 600);
+  center = createVector(width / 2, height / 2);
+  colors = [
+    color('#8B4513'), // SaddleBrown
+    color('#A0522D'), // Sienna
+    color('#CD853F'), // Peru
+    color('#D2691E'), // Chocolate
+    color('#F4A460'), // SandyBrown
+    color('#DEB887'), // BurlyWood
+    color('#D2B48C'), // Tan
+    color('#DAA520'), // GoldenRod
+    color('#C19A6B')  // Light Brown
+  ];
+  
   for (let i = 0; i < numParticles; i++) {
-    particles.push(new Particle(random(width), random(height)));
+    particles.push(new Particle(random(TWO_PI), random(50, 250)));
   }
+  
+  frameRate(60);
+  prevMouseX = mouseX;
 }
 
 function draw() {
-  background(20, 20, 50);
-  image(starryNight, 0, 0, width, height); // Dibuja la imagen de fondo
+  background(0);
+  translate(width / 2, height / 2);
+  rotate(radians(a));
   
   for (let p of particles) {
     p.update();
-    p.display();
+    p.show();
   }
+  
+  // Dibujar la pupila con efecto dinámico y aceleración constante
+  for (let i = 0; i < 300; i++) {
+    let angle = random(TWO_PI);
+    let radius = random(10, 40);
+    let x = radius * cos(angle);
+    let y = radius * sin(angle);
+    fill(255, random(100, 255));
+    noStroke();
+    ellipse(x, y, random(2, 6));
+  }
+  
+  // Ajustar velocidad de rotación según movimiento del mouse con mayor efecto
+  let mouseSpeed = mouseX - prevMouseX;
+  if (mouseSpeed > 0) {
+    b = map(mouseSpeed, 0, width, 0.1, 0.5);
+  } else if (mouseSpeed < 0) {
+    b = map(abs(mouseSpeed), 0, width, 0.05, 0.2);
+  }
+  prevMouseX = mouseX;
+  
+  a += b;
 }
 
 class Particle {
-  constructor(x, y) {
-    this.position = createVector(x, y);
-    this.velocity = p5.Vector.random2D();
-    this.acceleration = createVector(0, 0);
-    this.maxSpeed = random(2, 5);
-    this.baseColor = color(255, 204, 0); // Amarillo estrella
+  constructor(angle, radius) {
+    this.angle = angle;
+    this.radius = radius;
+    this.baseRadius = radius;
+    this.speed = random(0.002, 0.008);
+    this.colorA = colors[int(random(colors.length))];
+    this.colorB = colors[int(random(colors.length))];
+    this.lerpFactor = random(0.01, 0.05);
+    this.color = this.colorA;
   }
 
   update() {
-    let mouse = createVector(mouseX, mouseY);
-    this.acceleration = p5.Vector.sub(mouse, this.position);
-    this.acceleration.setMag(0.05); // Controla la fuerza de atracción
+    this.angle += this.speed;
+    this.radius = lerp(this.radius, this.baseRadius + sin(frameCount * 0.01) * 10, 0.1);
+    this.color = lerpColor(this.color, this.colorB, this.lerpFactor);
     
-    this.velocity.add(this.acceleration);
-    this.velocity.limit(this.maxSpeed);
-    this.position.add(this.velocity);
+    if (frameCount % 100 == 0) {
+      this.colorA = this.colorB;
+      this.colorB = colors[int(random(colors.length))];
+    }
   }
 
-  display() {
-    let distance = dist(this.position.x, this.position.y, mouseX, mouseY);
-    let c = lerpColor(this.baseColor, color(0, 153, 255), map(distance, 0, width, 0, 1));
-    fill(c);
+  show() {
+    let x = this.radius * cos(this.angle);
+    let y = this.radius * sin(this.angle);
+    
+    fill(this.color);
     noStroke();
-    ellipse(this.position.x, this.position.y, 8, 8);
+    ellipse(x, y, 5);
   }
 }
+
+#### Captura del contenido generado.
