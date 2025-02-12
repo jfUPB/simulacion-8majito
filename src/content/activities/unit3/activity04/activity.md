@@ -42,7 +42,7 @@ update() {
 
 Mira bien el código. ¿Dónde está el marco motion 101?
 
-- En la unidad anterior tu definías la aceleración mediante algún algoritmo. ¿Cuáles eran? muestra 
+- En la unidad anterior tu definías la aceleración mediante algún algoritmo. ¿Cuáles eran? Muestra 
 ejemplos de código de la unidad anterior (solo la parte donde se define la aceleración).
 - En esta unidad tu vas a calcular la aceleración. ¿Qué tiene que ver esto con las leyes de movimiento de Newton?
 

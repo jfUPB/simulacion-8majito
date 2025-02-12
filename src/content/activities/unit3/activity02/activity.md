@@ -10,4 +10,5 @@ Por ejemplo, se podría desarrollar una instalación donde los jugadores interac
 con proyecciones en superficies físicas, creando una experiencia de juego que 
 trascienda la pantalla tradicional. Otra posibilidad es diseñar esculturas cinéticas controladas por algoritmos generativos, donde la animación digital influya directamente en el movimiento físico de la obra.
 
-**Entrega**: un texto donde propongas para idea concreta asociado a tus intereses cómo difuminar la línea entre lo digital y lo tangible, ofreciendo experiencias inmersivas que involucren al espectador de manera multisensorial.
+**Entrega**: un texto donde propongas una idea concreta, asociada con tus intereses o línea de énfasis, 
+acerca de cómo difuminar la línea entre lo digital y lo tangible, ofreciendo experiencias inmersivas que involucren al espectador de manera multisensorial.
