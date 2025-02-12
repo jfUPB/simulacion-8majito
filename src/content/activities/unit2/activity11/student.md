@@ -98,3 +98,4 @@ class Particle {
 }
 ```
 #### Captura del contenido generado.
+![image](../../../../assets/Act8U2.png)
