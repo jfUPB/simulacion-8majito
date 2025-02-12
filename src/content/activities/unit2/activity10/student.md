@@ -1,4 +1,4 @@
-### Idea
+### Idea 🫐
 
 #### Intención de Diseño
 
@@ -17,7 +17,7 @@ Aplicaré MOTION 101 modelando cada partícula con los tres componentes clave:
 -  Patrik Hübner
 
 
-### Cambio de idea:
+### Cambio de idea: 👁️
 
 #### Intención de Diseño
 
