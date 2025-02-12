@@ -1,4 +1,5 @@
 #### Código de la aplicación.
+```js
 let particles = [];
 let numParticles = 6000;
 let center;
@@ -95,5 +96,5 @@ class Particle {
     ellipse(x, y, 5);
   }
 }
-
+```
 #### Captura del contenido generado.
