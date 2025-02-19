@@ -53,8 +53,11 @@ let moverB = new Mover(400, 30, 2);
 **Fricción**
 - Fuerza de fricción: Comencemos con la fricción y sigamos los pasos anteriores. Cada vez que dos superficies entran en contacto, experimentan fricción. La fricción es una fuerza disipadora, lo que significa que hace que la energía cinética de un objeto se convierta en otra forma, dando la impresión de pérdida o disipación.
   
-![image](https://github.com/user-attachments/assets/a1f10129-0da9-409b-863a-c9f0c24fcf66)
+![image](../../../../assets/friccion.png)
 
+- N se refiere a la fuerza normal, la fuerza perpendicular al movimiento del objeto a lo largo de una superficie.
+- Cuanto mayor sea la fuerza gravitatoria, mayor será la fuerza normal.
+- 
 #### Expliques qué fue lo más te llamó la atención de la unidad
 
 Lo que más me llamó la atención de la unidad fue la forma en que diferentes fuerzas, como la gravedad, la fricción y el viento, afectan el movimiento de los objetos en función de su masa. Me pareció muy interesante ver cómo objetos con distinta masa rebotaban de manera diferente y cómo ciertas superficies, como las viscosas, podían modificar drásticamente su comportamiento. También me sorprendió cómo la simulación de fuerzas en p5.js permite crear interacciones realistas con pocos cálculos, haciendo que los objetos respondan de manera convincente a su entorno.
