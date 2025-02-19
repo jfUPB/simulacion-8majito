@@ -49,8 +49,11 @@ let moverB = new Mover(400, 30, 2);
 ```
 - Cuando son dos obejtos o masas tener en cuenta que cada operación en el código se escribe dos veces, una para y otra para
 - Gravedad escalada por la masa
-- Fricción
-  - Fuerza de fricción: Comencemos con la fricción y sigamos los pasos anteriores. Cada vez que dos superficies entran en contacto, experimentan fricción. La fricción es una fuerza disipadora, lo que significa que hace que la energía cinética de un objeto se convierta en otra forma, dando la impresión de pérdida o disipación.
+  
+**Fricción**
+- Fuerza de fricción: Comencemos con la fricción y sigamos los pasos anteriores. Cada vez que dos superficies entran en contacto, experimentan fricción. La fricción es una fuerza disipadora, lo que significa que hace que la energía cinética de un objeto se convierta en otra forma, dando la impresión de pérdida o disipación.
+  
+![image](https://github.com/user-attachments/assets/a1f10129-0da9-409b-863a-c9f0c24fcf66)
 
 #### Expliques qué fue lo más te llamó la atención de la unidad
 
