@@ -6,7 +6,7 @@
 
 ## Tu sitio web personalizado
 
-Tendrás un sitio web personalizado solo para ti en este curso. Una vez generado, lo podrás encontrar [aquí](https://jfupb.github.io/simulacion-2025-10-simulacion-template2025-10)
+Tendrás un sitio web personalizado solo para ti en este curso. Una vez generado, lo podrás encontrar [aquí](https://jfupb.github.io/simulacion-8majito)
 
 ## Realización de actividades
 
