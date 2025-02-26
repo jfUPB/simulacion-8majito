@@ -81,3 +81,42 @@ if (mouseIsPressed) {
 [Ejemplo 2](https://editor.p5js.org/Majogc8/sketches/whpCPCgrZ)
 
 #### Atracción gravitacional:
+
+En esta simulación, se modelo un sistema de partículas (movers) que son atraídas por un centro de gravedad (attractor), simulando la dinámica de un tornado con un efecto de rotación adicional.
+
+**1. Fuerza Gravitacional:** La atracción entre el tornado y las partículas se basa en la Ley de la Gravitación Universal, donde la fuerza de atracción entre dos objetos depende de sus masas e inversamente del cuadrado de la distancia entre ellos. Se calcula con la fórmula:
+
+𝐹=𝑀𝑚/𝑑^2
+
+- M es la masa del tornado (attractor)
+- m es la masa de la partícula (mover)
+- d es la distancia entre ellos (limitada para evitar fuerzas extremadamente altas o débiles).
+
+**2. Efecto de Rotación:** Para imitar la naturaleza giratoria de un tornado, modificamos la dirección de la fuerza gravitacional con un pequeño desplazamiento angular. Esto se hace al sumar un ángulo al vector de fuerza original, generando un efecto de curva en el movimiento de las partículas:
+
+```js
+let angle = QUARTER_PI / 2; 
+let rotatedForce = p5.Vector.fromAngle(force.heading() + angle);
+rotatedForce.setMag(force.mag());
+return rotatedForce;
+```
+**3. Actualización de Movimiento:** Cada partícula (mover) responde a la fuerza aplicada según la Segunda Ley de Newton:
+
+𝐴=𝐹/𝑚
+
+```js
+​let f = p5.Vector.div(force, this.mass);
+this.acceleration.add(f);
+ ```
+Después, se actualiza su velocidad y posición en cada fotograma:
+
+```js
+this.velocity.add(this.acceleration);
+this.position.add(this.velocity);
+this.acceleration.mult(0);
+```
+- ​El Attractor se representa como un círculo azul en el centro.
+- Los Movers son pequeños círculos rojos que orbitan y convergen en espiral.
+ 
+
+[Ejemplo 3](https://editor.p5js.org/Majogc8/sketches/Oagj9ZWsP)
