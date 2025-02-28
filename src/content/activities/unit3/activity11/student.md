@@ -162,8 +162,12 @@ function launchFirework(x = random(width), y = map(noise(frameCount * 0.1), 0, 1
 ```
 #### Problema de los n-cuerpos
 
-Este código simula fuegos artificiales que explotan en el cielo y se atraen mutuamente debido a una fuerza gravitacional simulada. La simulación representa un problema de n-cuerpos, porque cada partícula del fuego artificial afecta a todas las demás, generando interacciones complejas y dinámicas en el movimiento de los fragmentos de la explosión.
+En esta simulación de fuegos artificiales, modelamos un sistema de múltiples partículas que interactúan entre sí bajo diferentes fuerzas físicas. El problema de los n-cuerpos surge al considerar cómo cada partícula es influenciada por la atracción de las demás, además de otras fuerzas como la gravedad, el viento y la fricción. Cada fuego artificial es tratado como una colección de partículas independientes que explotan desde un punto inicial y luego se ven afectadas por diversas fuerzas.
 
-El problema de los n-cuerpos se refiere al estudio del movimiento de múltiples objetos que interactúan entre sí mediante fuerzas (como la gravedad). En este caso, cada fragmento de fuego artificial experimenta atracción gravitacional hacia todos los demás fragmentos en la simulación. Como resultado, la trayectoria de cada partícula cambia en función de la presencia y posición de las demás, creando patrones caóticos y realistas.
+**Fuerzas Aplicadas en el Sistema**
+- Gravedad: Se aplica a cada partícula para hacer que sus trayectorias sigan una curva descendente realista después de la explosión.
+- Atracción entre partículas (N-cuerpos): Cada partícula atrae a las demás usando una ecuación basada en la ley de gravitación, pero con una intensidad modificada según la similitud de colores, lo que genera agrupamientos dinámicos.
+- Viento: Se modela como una fuerza constante en la dirección horizontal, afectando la trayectoria de las partículas.
+- Fricción: Reduce la velocidad de las partículas para que eventualmente se detengan, evitando que se muevan indefinidamente.
 
 [Aplicación]([https://editor.p5js.org/Majogc8/sketches/Oagj9ZWsP](https://editor.p5js.org/Majogc8/sketches/cTpWS6sM1)
