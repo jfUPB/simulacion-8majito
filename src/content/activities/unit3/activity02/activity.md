@@ -1,9 +1,9 @@
 #### Explorando Posibilidades
 
-**Enunciado**: analiza el siguiente proyecto: 
-[p5.js Animated Sculpture](https://www.kalibirdsall.com/p5js-animated-sculpture).
+**Enunciado**: te voy a presentar el estudio de diseño SOSO. Observa este el proyecto 
+[Data Structure](https://www.sosolimited.com/work/data-structure/).
 
-Tomando como inspiración el proyecto de Kali Birdsall, explora cómo las experiencias 
+Tomando como inspiración el proyecto de Data Structure, explora cómo las experiencias 
 digitales pueden manifestarse en el mundo físico. Esto puede lograrse mediante la creación de instalaciones interactivas que fusionen elementos digitales y físicos, utilizando técnicas como la proyección, la realidad aumentada y la fabricación digital.
 
 Por ejemplo, se podría desarrollar una instalación donde los jugadores interactúen 
