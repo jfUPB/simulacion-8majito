@@ -40,3 +40,7 @@ Esto es importante porque translate() y rotate() modifican el sistema de coorden
 ##### ¿Qué hace rectMode(CENTER)?
 
 Esta función cambia el punto de referencia de los rectángulos. En modo CENTER, el rectángulo se dibuja desde su centro en lugar de su esquina superior izquierda. Esto facilita alinearlo con la rotación del objeto.
+
+##### Relación entre el ángulo de rotación y el vector de velocidad
+
+El ángulo de rotación (angle) se obtiene de la dirección del vector de velocidad (velocity.heading()). Como rotate(angle) gira el sistema de coordenadas, el rectángulo se orienta en la dirección en la que se mueve el objeto.
