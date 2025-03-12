@@ -1,4 +1,4 @@
-```
+```js
 // Simulación de un vehículo que se mueve con las flechas izquierda y derecha.
 
 class Vehicle {
