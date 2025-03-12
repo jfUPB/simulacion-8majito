@@ -74,7 +74,7 @@ En la clase attractor cambiamos el color a morado
   }
 }
 ```
-![image](https://github.com/user-attachments/assets/93a90710-9e67-4de4-a0e8-35dfd259a1b8)
+![image](../../../../src/assets/Attractor Morado.png)
 
 #### Mover el attractor con el mouse y cambiar su color cuando el mouse está sobre él.
 
@@ -200,3 +200,5 @@ function mousePressed() {
 function mouseReleased() {
   attractor.dragging = false;
 }
+
+![image](../../../../src/assets/Attractor Morado.png)
