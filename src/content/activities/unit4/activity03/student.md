@@ -1,4 +1,4 @@
-
+```
 // Simulación de un vehículo que se mueve con las flechas izquierda y derecha.
 
 class Vehicle {
@@ -88,7 +88,7 @@ function draw() {
   vehicle.update(); // Actualiza la posición y velocidad
   vehicle.display(); // Dibuja el vehículo
 }
-
+```
 
 
 ![image]()
