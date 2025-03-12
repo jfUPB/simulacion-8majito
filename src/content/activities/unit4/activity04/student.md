@@ -76,6 +76,7 @@ En la clase attractor cambiamos el color a morado
 ```
 ![image](../../../../assets/Attractor Morado.png)
 
+
 #### Mover el attractor con el mouse y cambiar su color cuando el mouse está sobre él.
 
 **this.dragging:** Es un booleano (valor true o false) que indica si el usuario está arrastrando el Attractor con el mouse.
@@ -124,10 +125,7 @@ function draw() {
 }
 ```
 2. Cambio colores
-   // The Nature of Code
-// Daniel Shiffman
-// http://natureofcode.com
-
+```js
 // Genera fuerza gravitacional
 class Attractor {
   constructor() {
@@ -200,5 +198,5 @@ function mousePressed() {
 function mouseReleased() {
   attractor.dragging = false;
 }
-
+```
 ![image](../../../../assets/Act4U4.gif)
