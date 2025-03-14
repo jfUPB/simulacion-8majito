@@ -1,3 +1,9 @@
+#### 🏹 ¿Cómo funcionará?
+- Flecha derecha (→): Aumenta la aceleración en X (empuja a la derecha).
+- Flecha izquierda (←): Aumenta la aceleración en X en sentido contrario.
+- Flecha arriba (↑): Aumenta la aceleración en Y (hacia arriba).
+- Flecha abajo (↓): Aumenta la aceleración en Y (hacia abajo).
+
 ```js
 // Arreglo para almacenar los osciladores
 let oscillators = []; 
@@ -105,6 +111,12 @@ function keyPressed() {
 
 ```
 
-![image](../../../../assets/Función-Sinusoide.gif)
+#### 📌 Conceptos de las Unidades Aplicado
+- Unidad 1 (Aleatoriedad): Se usa random() para generar ángulos iniciales y amplitudes aleatorias, lo que hace que cada oscilador se mueva de manera única.
+- Unidad 3 (Fuerzas): Se usa un vector de fuerza (wind) que afecta la aceleración de los osciladores.
+-  Física del Movimiento: Cada oscilador sigue una dinámica de movimiento oscilatorio, donde se aplican las ecuaciones de aceleración y velocidad.
+-  Aceleración Constante: fuerza con las teclas de flecha, el concepto de aplicar una fuerza externa sigue siendo clave.
+
+![image](../../../../assets/Act07U4.gif)
 
 [Repaso](https://editor.p5js.org/Majogc8/sketches/rEq72mm7F) 
