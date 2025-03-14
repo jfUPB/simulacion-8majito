@@ -72,5 +72,6 @@ function draw() {
 - Amplitud (amplitudeSlider) → Modifica qué tan grande es la oscilación.
 - Fase (phaseSlider) → Cambia el desfase en tiempo real.
 
-![image](../../../../assets/Attractor Morado.png)
-[Sinusoide](https://editor.p5js.org/Majogc8/sketches/Yj53_TDMo)
+![image](../../../../assets/Función-Sinusoide.gif)
+
+[Sinusoide](https://editor.p5js.org/Majogc8/sketches/Yj53_TDMo) 🫖
