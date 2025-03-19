@@ -34,3 +34,4 @@ function draw() {
 - Se usa una variable offset para desplazar la onda horizontalmente con el tiempo, creando el efecto de movimiento de ola.
 - Mantiene el cálculo de y con sin(), pero ahora le sumamos offset para el desplazamiento.
 
+![image](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGt0dWsxOWNyOWVyaWt0cnc3bG15MXE5Yjc0bzE3aDA1OXRwMHNqcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/iLX88ymqDIgL1a1dRf/giphy.gif)
