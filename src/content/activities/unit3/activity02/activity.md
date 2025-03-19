@@ -1,6 +1,6 @@
 #### Explorando Posibilidades
 
-**Enunciado**: te voy a presentar el estudio de diseño SOSO. Observa este el proyecto 
+**Enunciado**: te voy a presentar el estudio de diseño SOSO. Observa el proyecto 
 [Data Structure](https://www.sosolimited.com/work/data-structure/).
 
 Tomando como inspiración el proyecto de Data Structure, explora cómo las experiencias 

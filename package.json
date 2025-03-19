@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.32.2",
+    "@babel/runtime": "^7.26.10",
     "astro": "^5.4.0",
     "p5": "^1.11.2",
     "sharp": "^0.32.5"
