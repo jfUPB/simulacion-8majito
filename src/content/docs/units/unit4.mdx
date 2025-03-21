@@ -8,8 +8,16 @@ import unidades from '../../activities/unidades.json';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción 
+
+En las unidades anteriores has explorado el movimiento con el marco motion 101
+manipulando la posición de los elementos gráficos de la simulación. En esta 
+unidad explorarás el movimiento angular u oscilatorio.
 
 ## ¿Qué aprenderás en esta unidad?
+
+En esta fase te mostraré algunos referentes que aplican los conceptos que investigarás 
+y aplicarás en esta unidad.
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -23,6 +31,9 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Investigación
 
+Ahora vas a investigar algunos conceptos fundamentales que te servirán para 
+diseñar tu aplicación en la fase que sigue.
+
 {unit.actividades
   .filter(act => act.fase === "seek")
   .map(act => (
@@ -35,6 +46,8 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
 ## Aplicación
 
+Es momento de aplicar los conceptos aprendidos en la unidad.
+
 {unit.actividades
   .filter(act => act.fase === "apply")
   .map(act => (
@@ -45,7 +58,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Consolidación y matacognión
+## Consolidación y metacognición
+
+He venido escuchando que esta es una fase de relleno 😭. Nada 
+más lejos de la verdad, de verdad. En esta fase del proceso de aprendizaje 
+es donde miras hacia ``atrás`` y consolidas lo que aprendiste. Adicionalmente,
+reflexionas sobre tu proceso de aprendizaje y las posibilidades de aplicar lo 
+aprendido en otros contextos.
 
 {unit.actividades
   .filter(act => act.fase === "reflect")
