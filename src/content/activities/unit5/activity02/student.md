@@ -84,3 +84,61 @@ Se implementó el uso de aceleración hacia un punto específico (el mouse) como
 [Simulación 3](https://editor.p5js.org/Majogc8/sketches/_z2QypdSO)
 
 ![Image](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXo1cTFkM256dzUyMWY5dDhrZ216NXc1OXkwdGt1Y2xqODI2M3gzciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HitnscuKKx10lV10Nk/giphy.gif)
+
+####  Example 4.6: Un sistema de partículas con fuerzas
+
+**Creación:**
+- Las partículas son creadas dentro del método addParticle() de la clase Emitter.
+- Cada vez que addParticle() es llamado en el draw(), una nueva instancia de la clase Particle se genera y se agrega al arreglo this.particles.
+
+**Desaparición y limpieza:**
+- Cada partícula tiene una propiedad lifespan, que disminuye con cada frame (this.lifespan -= 2.0 en el método update() de la clase Particle).
+- Cuando el valor de lifespan llega a cero (this.lifespan < 0.0), el método isDead() retorna true.
+- En el método run() del emisor, se verifica si alguna partícula está "muerta". Si lo está, se elimina del arreglo this.particles usando el método splice().
+
+***Conceptos aplicados 🧷***
+
+1. *Caminatas aleatorias:* Las partículas realizan movimientos impredecibles utilizando el ruido Perlin.
+- Cómo se aplicó: Se usó la función noise() para generar ángulos de movimiento suaves y pseudoaleatorios. 
+- Por qué se usó: Para dar un movimiento orgánico y fluido a las partículas, aportando estética y naturalidad.
+2. *Rebotes en los bordes:* Las partículas rebotan al llegar a los límites del canvas, invirtiendo su dirección.
+- Cómo se aplicó: Al detectar que una partícula alcanza los bordes, la dirección de su velocidad en ese eje (x o y) se invierte multiplicándola por -1.
+- Por qué se usó: Para mantener las partículas dentro del canvas, haciendo que la interacción con los bordes sea dinámica y visualmente atractiva.
+
+[Simulación 4](https://editor.p5js.org/Majogc8/sketches/ic8KkVDuQ)
+
+![Image](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmdiM3QxZ2RhNjFjcDVwejdycjN5emwycTgycnZ0MHo2MDhsYjAxZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u7ajnJMDb2WITBY6z2/giphy.gif)
+
+#### Exmaple 4.7: Un sistema de partículas con un repelente
+
+**Creación:**
+- En el método draw(), el sistema de partículas (Emitter) invoca addParticle().
+- Este método agrega una nueva instancia de la clase Particle a la lista de partículas (this.particles).
+- Cada nueva partícula se posiciona en el origen (this.origin) del Emitter, definido al momento de su creación.
+
+**Desaparición y limpieza:**
+- En cada frame, las partículas se actualizan mediante particle.update():
+- Se reduce su lifespan en 2 unidades por frame.
+- Si lifespan cae por debajo de 0, la partícula es considerada "muerta".
+- En el método run() del Emitter, se revisa cada partícula con particle.isDead():
+  - Si devuelve true, esa partícula se elimina de la lista con this.particles.splice(i, 1).
+
+**Gestión de memoria:**
+- Las partículas se almacenan en el array this.particles del Emitter.
+- Cada vez que una partícula "muere", se elimina del array con splice(), liberando esa referencia de memoria.
+- Esto garantiza que no se acumulen partículas innecesarias en el sistema, optimizando el uso de memoria.
+
+
+***Conceptos aplicados 🧷***
+1. *Distribución Normal:* Genera partículas con posiciones aleatorias basadas en una campana de Gauss.
+- Cómo se usó: Se aplicó con randomGaussian() para posicionar partículas cerca del emisor.
+- Por qué: Simula patrones naturales más realistas.
+
+2. *Fricción:* Una fuerza que reduce la velocidad de las partículas.
+- Cómo se usó: Se calculó un vector opuesto a la dirección del movimiento con un coeficiente de fricción.
+- Por qué: Evita que las partículas se muevan infinitamente rápido, haciéndolo más realista.
+
+
+[Simulación 5](https://editor.p5js.org/Majogc8/sketches/ynrwoGuL6)
+
+![Image](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcm9xMG9wNW13OWc1c2xyOGg2aXV1cmp2cHNlbXExdG83amVscTN0NSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/muN0n15hcUSw3maPWl/giphy.gif)
