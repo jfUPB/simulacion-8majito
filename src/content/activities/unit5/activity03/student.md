@@ -59,5 +59,5 @@ if (particle.isDead()) {
 ```
 [Aplicación](https://editor.p5js.org/Majogc8/sketches/bqP-_i8Y0)
 
-![Image](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGlvbDVrbWVpNjJ0cHF0Nzhkdml4OHEyajN5am8wY3g3czVxY2tkNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Q94Qvg0jTf32mwmXnG/giphy.gif)
+![Image](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDhtd3dqczF6ZjdqMm56bmhyaHZkYjN3cWxxcm43YWR6cGJoMG5nMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/35aa4oQleke0kmLbi9/giphy.gif)
 
