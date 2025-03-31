@@ -5,11 +5,35 @@ unitId: unit7
 
 import ActivityPlaceholder from '../../../components/ActivityPlaceholder.astro';
 import unidades from '../../activities/unidades.json';
+import { Aside} from '@astrojs/starlight/components';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción 📜
+<Aside type="note" title="Dando vida física a las palabras">
 
-## ¿Qué aprenderás en esta unidad?
+En esta unidad, nos enfrentamos a un **reto de diseño** que combina la expresividad conceptual 
+con la simulación física. Exploraremos la idea de la **tipografía semántica**, donde la 
+forma visual de una palabra refuerza o juega con su significado, pero le daremos un giro dinámico.
+
+Inspirados por el concepto "Word as Image", utilizaremos la biblioteca de física 2D 
+**Matter.js** junto con p5.js para no solo *representar* el significado de una palabra, 
+sino para darle **vida animada** a través de la simulación física. ¿Cómo pueden las 
+propiedades físicas (gravedad, colisiones, restricciones) animar una palabra para expresar 
+su esencia?
+</Aside>
+
+## ¿Qué aprenderás en esta unidad? 💡
+
+<Aside type="tip" title="Objetivos de aprendizaje">
+Al finalizar esta unidad, serás capaz de:
+- Comprender y aplicar creativamente el concepto de "Word as Image" (tipografía semántica).
+- Investigar e identificar las funcionalidades básicas de la biblioteca Matter.js (motor, mundo, cuerpos, restricciones).
+- Integrar Matter.js con p5.js para crear simulaciones físicas 2D.
+- Utilizar cuerpos y restricciones de Matter.js para construir formas complejas (como letras).
+- Aplicar principios de física simulada para animar una palabra de forma que refleje su significado.
+- Resolver problemas técnicos relacionados con la integración de p5.js y Matter.js.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -21,7 +45,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Investigación
+## Investigación 🔎
+
+<Aside type="note" title="Explorando Matter.js">
+Para dar vida física a nuestras palabras, necesitamos dominar una nueva herramienta: Matter.js. 
+Investigaremos sus conceptos fundamentales y funcionalidades básicas para poder aplicarla en 
+nuestro reto.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "seek")
@@ -33,7 +63,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Aplicación
+## Aplicación 🛠
+
+<Aside type="note" title="¡A Animar palabras!">
+Es el momento de combinar inspiración, física y código. Aplicarás el concepto de 
+"Word as Image" y tus nuevos conocimientos de Matter.js para crear una animación 
+generativa donde una palabra cobra vida según su significado.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "apply")
@@ -45,7 +81,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Consolidación y matacognión
+## Consolidación y metacognición 🤔
+
+<Aside type="note" title="Reflexionando sobre física y semántica">
+Has enfrentado el reto de dar vida física a las palabras. Ahora, consolidaremos lo 
+aprendido sobre Matter.js y reflexionaremos sobre el proceso creativo y 
+técnico de este desafío.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "reflect")
