@@ -213,3 +213,5 @@ Aunque todavía:
 - El enjambre se ve más caótico y fragmentado.
 - Aparecen pequeños grupos sueltos o boids que vuelan solos.
 - La estructura compacta y organizada que se observa normalmente desaparece.
+
+[!Image](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWVlNWRqeWlvNWRxeHVuZnM3ODQza3E5bzZkenZ2cnlyaXliNHBmcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/o7u2c7RPXQaseOp4G5/giphy.gif)
