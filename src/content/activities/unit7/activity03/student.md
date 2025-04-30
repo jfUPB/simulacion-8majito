@@ -28,3 +28,4 @@ Usaré círculos para representar las letras de la palabra "BUBBLE". Cada letra 
 
 [Aplicación](https://editor.p5js.org/Majogc8/sketches/Wbbdzfy0u)
 
+[!Image](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjBnbTdrc2x2eTk2a2xjNWhuNXZpYXZnNDkxenluMWZyY2QyOG1xMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TAAARvrOQdRKfntkxF/giphy.gif)
