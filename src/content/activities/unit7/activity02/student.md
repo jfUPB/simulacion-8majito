@@ -18,6 +18,8 @@ Seven keys components
 
  #### Experimentación con código 🐊
 
- **1.mundo con gravedad y añadir cuerpos simples (poligonos) que caigan y colisionen.**
+ **1.** Un mundo con gravedad y añadir cuerpos simples (poligonos) que caigan y colisionen.
 
 [Ejemplo1](https://editor.p5js.org/Majogc8/sketches/jc3lGogHh)
+
+[!Image](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3kzdWcxNGs2dHRzNTd3c2h6aTh3NGY4bWo4bm9yYTBuYnplZjBtcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Mk7Y6tSLKgfhiCrIRX/giphy.gif)
