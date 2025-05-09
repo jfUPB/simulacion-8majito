@@ -5,11 +5,38 @@ unitId: unit8
 
 import ActivityPlaceholder from '../../../components/ActivityPlaceholder.astro';
 import unidades from '../../activities/unidades.json';
+import { Aside} from '@astrojs/starlight/components';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción 📜
+<Aside type="note" title="Sinfonía visual generativa: el reto final">
 
-## ¿Qué aprenderás en esta unidad?
+Has acumulado un arsenal de conceptos y técnicas: desde los fundamentos de la simulación y 
+el diseño generativo hasta agentes autónomos y física simulada. Ahora, es el momento de 
+integrar todo este conocimiento en un proyecto culminante: crear una **pieza de arte 
+generativo algorítmico interactivo y en tiempo real para un tema musical**.
+
+El objetivo es diseñar e implementar un sistema visual que reaccione dinámicamente 
+a las características de una pieza musical (ritmo, melodía, intensidad), pero que 
+también incorpore elementos generativos para que cada visualización sea única e irrepetible. 
+Nos inspiraremos en artistas que trabajan en la frontera entre música y visuales 
+generativos en vivo.
+</Aside>
+
+## ¿Qué aprenderás en esta unidad? 💡
+
+<Aside type="tip" title="Objetivos de aprendizaje">
+Al finalizar esta unidad, serás capaz de:
+- Diseñar un sistema de visualización generativa que responda a estímulos musicales en tiempo real.
+- Aplicar técnicas de análisis de audio (amplitud, FFT) usando p5.sound para extraer características musicales.
+- Integrar conceptos de diseño generativo y simulación (ej: fuerzas, partículas, agentes, ruido, física) aprendidos en el curso.
+- Implementar un algoritmo generativo que utilice los datos del audio y/o interacción del usuario para crear 
+visuales dinámicos y no repetitivos.
+- Desarrollar una pieza interactiva en tiempo real usando p5.js y p5.sound.
+- Gestionar un proyecto de mayor complejidad que integre múltiples conceptos y técnicas del curso.
+- Reflexionar sobre el proceso completo de diseño e implementación de un sistema generativo complejo.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -21,7 +48,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Investigación
+## Investigación 🔎
+
+<Aside type="note" title="Diseñando la experiencia audiovisual">
+Antes de codificar, necesitamos un plan sólido. Definiremos el concepto, elegiremos 
+la música, determinaremos qué características del audio usar y diseñaremos el 
+algoritmo generativo que conectará sonido y visión.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "seek")
@@ -33,7 +66,12 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Aplicación
+## Aplicación 🛠
+
+<Aside type="note" title="Implementando la sinfonía visual">
+Es hora de traducir tu diseño en código. Implementarás el análisis de audio, el 
+algoritmo generativo y la interacción para crear tu obra.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "apply")
@@ -45,7 +83,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Consolidación y matacognión
+## Consolidación y metacognición 🤔
+
+<Aside type="note" title="Reflexionando sobre el proceso y el resultado final">
+Has completado el reto final, integrando múltiples aspectos del curso. Ahora, 
+consolidaremos lo aprendido en este proyecto complejo, evaluaremos el 
+resultado y reflexionaremos sobre todo el proceso.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "reflect")

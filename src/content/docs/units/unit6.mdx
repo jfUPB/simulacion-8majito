@@ -5,11 +5,39 @@ unitId: unit6
 
 import ActivityPlaceholder from '../../../components/ActivityPlaceholder.astro';
 import unidades from '../../activities/unidades.json';
+import { Aside} from '@astrojs/starlight/components';
 
 export const unit = unidades.find(u => u.nombre === frontmatter.title);
 
+## Introducción 📜
+<Aside type="note" title="Agentes autónomos y comportamiento emergente">
 
-## ¿Qué aprenderás en esta unidad?
+Continuando nuestro viaje por "The Nature of Code", nos adentramos en el fascinante mundo 
+de los **agentes autónomos**. Estos son entidades que operan independientemente en 
+un entorno, tomando decisiones basadas en un conjunto de reglas y en la percepción 
+de su entorno (incluyendo otros agentes).
+
+En esta unidad, exploraremos cómo reglas simples a nivel individual pueden dar lugar a 
+comportamientos colectivos complejos y a menudo inesperados, un fenómeno conocido 
+como **emergencia**. Veremos cómo artistas utilizan estos conceptos para crear obras 
+generativas llenas de vida y dinamismo. Nos centraremos en dos algoritmos clave presentados 
+en "The Nature of Code": los **campos de flujo (flow fields)** y el **comportamiento de 
+enjambre (flocking)**. 
+</Aside>
+
+## ¿Qué aprenderás en esta unidad? 💡
+
+<Aside type="tip" title="Objetivos de aprendizaje">
+Al finalizar esta unidad, serás capaz de:
+- Describir el concepto de agente autónomo y comportamiento emergente en el contexto del arte generativo.
+- Analizar y explicar el funcionamiento de los algoritmos de campos de flujo (flow fields) y comportamiento 
+de enjambre (flocking) presentados en "The Nature of Code".
+- Identificar los parámetros clave que controlan el comportamiento de los agentes en ambos algoritmos.
+- Implementar un sketch interactivo en p5.js que utilice flow fields o flocking.
+- Aplicar creativamente uno de estos algoritmos a un contexto visual o conceptual inesperado, diferente a 
+las simulaciones típicas.
+- Reflexionar sobre las diferencias y similitudes entre ambos enfoques algorítmicos.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "set")
@@ -21,7 +49,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Investigación
+## Investigación 🔎
+
+<Aside type="note" title="Analizando los algoritmos">
+Vamos a sumergirnos en el código y la lógica detrás de los campos de flujo y el 
+comportamiento de enjambre, utilizando los ejemplos de "The Nature of Code" como 
+punto de partida. El objetivo es entender *cómo* funcionan internamente.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "seek")
@@ -33,7 +67,13 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Aplicación
+## Aplicación 🛠
+
+<Aside type="note" title="Creación generativa con un giro inesperado">
+Ahora que entiendes los algoritmos, es tu turno de crear. Aplicarás uno de ellos
+ (flow fields o flocking) para generar una pieza de arte interactivo, pero con el desafío 
+ de usarlo en un contexto visual o conceptual diferente al habitual.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "apply")
@@ -45,7 +85,12 @@ export const unit = unidades.find(u => u.nombre === frontmatter.title);
   ))
 }
 
-## Consolidación y matacognión
+## Consolidación y metacognición 🤔
+
+<Aside type="note" title="sintetizando y reflexionando">
+Hemos explorado dos poderosos algoritmos para simular agentes autónomos y los has aplicado 
+creativamente. Es momento de consolidar lo aprendido, evaluar tu proceso y ofrecer feedback.
+</Aside>
 
 {unit.actividades
   .filter(act => act.fase === "reflect")
