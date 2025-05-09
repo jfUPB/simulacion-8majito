@@ -511,6 +511,7 @@
       
       isDead() {
         return this.lifespan <= 0;
+        
       }
     }
   </script>
