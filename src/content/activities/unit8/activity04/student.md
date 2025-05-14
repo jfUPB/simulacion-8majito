@@ -1,519 +1,480 @@
-#### Aplicación 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Je te laisserai des mots - Visualización</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #030314;
-      touch-action: none; /* Prevenir comportamientos táctiles por defecto */
-    }
-    #instructions {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: sans-serif;
-      font-size: 14px;
-      pointer-events: none;
-      transition: opacity 1s;
-    }
-    #playControls {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      z-index: 99;
-    }
-    #playControls button {
-      padding: 12px 24px;
-      margin: 10px;
-      font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    #playControls button:hover {
-      background-color: #45a049;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <div id="playControls">
-    <h2>Audio listo</h2>
-    <p>Haz clic en reproducir para comenzar la visualización</p>
-    <button id="startBtn">Reproducir</button>
-  </div>
+let song;
+let fft;
+let amplitude;
+let particles = [];
+let ribbons = [];
+let sparkles = [];
+let soundWaves = []; // Nueva array para las ondas sonoras
+let baseColor, accentColor;
+let lastLevel = 0;
+let levelHistory = [];
+let maxLevelHistory = 50;
+let colorPalette = [];
+let numWaves = 8; // Número de ondas sonoras en la pantalla
+
+function preload() {
+  // Cargar directamente el archivo de audio
+  soundFormats('mp3', 'ogg', 'wav');
+  song = loadSound("Piano.mp3");
+}
+
+// Clase para los destellos de fondo como en la imagen 2
+class Sparkle {
+  constructor() {
+    this.x = random(width);
+    this.y = random(height);
+    this.size = random(1, 4);
+    this.alpha = random(100, 255);
+    this.blinkRate = random(0.01, 0.05);
+    this.offset = random(0, 360);
+  }
   
-  <div id="instructions">
-    Mueve el ratón: Cambia los colores | Click: Ajusta sensibilidad | Espacio: Pausa/Reanuda
-  </div>
+  update(level) {
+    // Parpadeo suave
+    this.alpha = 150 + 105 * sin(frameCount * this.blinkRate + this.offset);
+    
+    // Responder ligeramente al audio
+    this.size = map(level, 0, 1, 1, 4) * random(0.8, 1.2);
+  }
   
-  <script>
-    let song;
-    let fft;
-    let amplitude;
-    let loaded = false;
-    let particles = [];
-    let waves = [];
-    let baseColor;
-    let accentColor;
-    let bgColor;
-    let sensitivity = 1.5;
-    let instructions;
-    let userStartAudio = false; // Flag para controlar inicio de audio por usuario
+  display() {
+    // Dibujar como pequeño destello estelar
+    noStroke();
+    fill(45, 10, 100, this.alpha);
+    ellipse(this.x, this.y, this.size);
     
-    // Reemplaza esta URL con la ruta a tu archivo de audio
-    // No necesitamos la variable audioURL ya que cargaremos el archivo en preload
+    // Rayos de luz ocasionales
+    if (random() > 0.99) {
+      stroke(45, 10, 100, this.alpha * 0.5);
+      strokeWeight(0.5);
+      let len = random(3, 8);
+      line(this.x - len, this.y, this.x + len, this.y);
+      line(this.x, this.y - len, this.x, this.y + len);
+    }
+  }
+}
+
+// Nueva clase para las ondas de sonido que cubren toda la pantalla
+class SoundWave {
+  constructor() {
+    this.yBase = random(height); // Posición base vertical
+    this.waveSpeed = random(0.5, 2); // Velocidad de movimiento horizontal
+    this.frequency = random(0.01, 0.03); // Frecuencia de onda
+    this.amplitude = random(20, 50); // Amplitud base
+    this.thickness = random(2, 6); // Grosor de la línea
+    this.color = colorPalette[floor(random(colorPalette.length))];
+    this.phase = random(360); // Fase inicial
+    this.frequencyBand = floor(random(10, 200)); // Banda de frecuencia específica a la que responde
+    this.alpha = random(40, 90); // Transparencia
+    this.yMovement = random(-0.5, 0.5); // Velocidad vertical lenta
+  }
+  
+  update(spectrum, level) {
+    // La onda se mueve horizontalmente
+    this.phase += this.waveSpeed;
     
-    function preload() {
-      // Cargar directamente el archivo de audio
-      soundFormats('mp3', 'ogg', 'wav');
-      song = loadSound("Piano.mp3");
+    // Lento movimiento vertical
+    this.yBase += this.yMovement;
+    
+    // Mantener dentro de los límites de la pantalla con rebote suave
+    if (this.yBase < 0 || this.yBase > height) {
+      this.yMovement *= -1;
+      this.yBase = constrain(this.yBase, 0, height);
     }
     
-    function setup() {
-      let cnv = createCanvas(windowWidth, windowHeight);
+    // Ajustar la amplitud según la banda de frecuencia específica
+    let freqValue = spectrum[this.frequencyBand];
+    this.currentAmplitude = this.amplitude * (1 + map(freqValue, 0, 255, 0, 2));
+    
+    // Aumentar el grosor según el nivel general de audio
+    this.currentThickness = this.thickness * (1 + level * 2);
+  }
+  
+  display() {
+    push();
+    noFill();
+    stroke(hue(this.color), saturation(this.color), brightness(this.color), this.alpha);
+    strokeWeight(this.currentThickness);
+    
+    beginShape();
+    for (let x = 0; x <= width; x += 10) {
+      // Crear una onda sinusoidal con variación de amplitud
+      let xOffset = (x * this.frequency) + this.phase;
+      let y = this.yBase + sin(xOffset) * this.currentAmplitude;
       
-      // Habilitar toque inicial para dispositivos móviles
-      cnv.touchStarted(canvasPressed);
-      
-      // Inicializar analizadores de audio
-      fft = new p5.FFT(0.8, 1024);
-      amplitude = new p5.Amplitude();
-      
-      // Colores iniciales
-      updateColors(random(360));
-      
-      // Crear ondas iniciales
-      for (let i = 0; i < 3; i++) {
-        waves.push(new Wave(i * 0.5));
-      }
-      
-      instructions = select('#instructions');
-      
-      // Ocultar instrucciones después de 8 segundos
-      setTimeout(() => {
-        if (instructions) {
-          instructions.style('opacity', '0');
-        }
-      }, 8000);
-      
-      // Configurar el botón de inicio
-      setupControls();
-      
-      // Cargar el audio
-      loadAudio();
-      
-      // Asegurar que p5.sound esté inicializado
-      getAudioContext().suspend();
+      vertex(x, y);
+    }
+    endShape();
+    pop();
+  }
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  angleMode(DEGREES);
+  colorMode(HSB, 360, 100, 100, 100);
+  
+  // Generar paleta de colores inspirada en la primera imagen
+  colorPalette = [
+    color(0, 80, 100),    // Rojo
+    color(20, 80, 100),   // Naranja
+    color(45, 80, 100),   // Amarillo dorado
+    color(180, 80, 100),  // Cian
+    color(220, 80, 90),   // Azul
+    color(270, 70, 90),   // Violeta
+  ];
+  
+  // Colores base para la visualización
+  baseColor = color(220, 80, 90);    // Azul para ondas principales
+  accentColor = color(45, 100, 100); // Dorado para destellos
+  
+  // Configurar analizadores de audio
+  fft = new p5.FFT(0.9, 256);
+  amplitude = new p5.Amplitude();
+  
+  song.loop(); // Reproduce en bucle
+  fft.setInput(song);
+  amplitude.setInput(song);
+  
+  // Crear cintas iniciales con más densidad
+  for (let i = 0; i < 8; i++) {
+    ribbons.push(new Ribbon());
+  }
+  
+  // Crear ondas sonoras distribuidas por la pantalla
+  for (let i = 0; i < numWaves; i++) {
+    soundWaves.push(new SoundWave());
+  }
+  
+  // Crear destellos iniciales
+  for (let i = 0; i < 100; i++) {
+    sparkles.push(new Sparkle());
+  }
+  
+  // Fondo azul profundo como en la segunda imagen
+  background(220, 90, 20);
+}
+
+function draw() {
+  // Crear fondo con desvanecimiento suave para efecto de rastro
+  background(220, 90, 20, 5); // Fondo azul profundo con baja opacidad para crear estelas
+  
+  // Obtener datos de audio
+  let spectrum = fft.analyze();
+  let level = amplitude.getLevel();
+  levelHistory.push(level);
+  
+  // Mantener el historial de amplitud en un tamaño fijo
+  if (levelHistory.length > maxLevelHistory) {
+    levelHistory.shift();
+  }
+  
+  // Detectar picos en la amplitud para eventos especiales
+  let isPeak = false;
+  if (level > lastLevel * 1.2 && level > 0.2) {
+    isPeak = true;
+    // Añadir nuevas partículas en eventos de pico (destellos brillantes)
+    for (let i = 0; i < 25; i++) {
+      particles.push(new Particle());
+    }
+    // Ocasionalmente añadir nuevas cintas
+    if (random() > 0.6 && ribbons.length < 12) {
+      ribbons.push(new Ribbon());
+    }
+    // Añadir ocasionalmente una nueva onda
+    if (random() > 0.8 && soundWaves.length < numWaves + 5) {
+      soundWaves.push(new SoundWave());
+    }
+  }
+  lastLevel = level;
+  
+  // Actualizar y mostrar destellos de fondo (como en la segunda imagen)
+  for (let i = 0; i < sparkles.length; i++) {
+    sparkles[i].update(level);
+    sparkles[i].display();
+  }
+  
+  // Dibujar las ondas sonoras por toda la pantalla
+  for (let i = 0; i < soundWaves.length; i++) {
+    soundWaves[i].update(spectrum, level);
+    soundWaves[i].display();
+  }
+  
+  // Centro brillante como en la segunda imagen (cuando hay picos de sonido)
+  let centerBrightness = map(level, 0, 1, 0, 100);
+  if (centerBrightness > 15) {
+    let centerRadius = map(level, 0, 1, 50, 200);
+    for (let i = 10; i > 0; i--) {
+      let alpha = map(i, 0, 10, 0, 90);
+      fill(45, 20, 100, alpha);
+      ellipse(width/2, height/2, centerRadius * i / 5);
+    }
+  }
+  
+  // Actualizar y mostrar cintas ondulantes (como en la primera imagen)
+  for (let i = ribbons.length - 1; i >= 0; i--) {
+    ribbons[i].update(spectrum, level);
+    ribbons[i].display();
+    
+    // Eliminar cintas antiguas
+    if (ribbons[i].lifespan <= 0) {
+      ribbons.splice(i, 1);
+    }
+  }
+  
+  // Actualizar y mostrar partículas brillantes
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update(level);
+    particles[i].display();
+    
+    // Eliminar partículas antiguas
+    if (particles[i].lifespan <= 0) {
+      particles.splice(i, 1);
+    }
+  }
+  
+  // Dibujar forma de onda en la parte inferior (opcional)
+  drawWaveform();
+}
+
+function drawWaveform() {
+  let waveform = fft.waveform();
+  noFill();
+  strokeWeight(2);
+  
+  // Dibujar la forma de onda en la parte inferior
+  beginShape();
+  for (let i = 0; i < waveform.length; i++) {
+    let x = map(i, 0, waveform.length, 0, width);
+    let y = map(waveform[i], -1, 1, height - 100, height - 20);
+    
+    // Color basado en la posición y valor de la onda
+    let hue = map(i, 0, waveform.length, 180, 240);
+    let sat = map(abs(waveform[i]), 0, 1, 40, 100);
+    stroke(hue, sat, 90, 30);
+    
+    vertex(x, y);
+  }
+  endShape();
+}
+
+function drawAmplitudeHistory() {
+  noFill();
+  strokeWeight(3);
+  stroke(40, 100, 100, 50);
+  
+  beginShape();
+  for (let i = 0; i < levelHistory.length; i++) {
+    let x = map(i, 0, maxLevelHistory, 0, width);
+    let y = map(levelHistory[i], 0, 1, height * 0.75, height * 0.25);
+    vertex(x, y);
+  }
+  endShape();
+}
+
+// Clase para las cintas ondulantes multicolores como en la primera imagen
+class Ribbon {
+  constructor() {
+    this.points = [];
+    this.maxPoints = 150;
+    this.lifespan = 350;
+    this.colorIndex = floor(random(colorPalette.length));
+    this.color = colorPalette[this.colorIndex];
+    this.nextColorIndex = (this.colorIndex + 1) % colorPalette.length;
+    this.nextColor = colorPalette[this.nextColorIndex];
+    this.x = random(width);
+    this.y = random(height);
+    this.baseWidth = random(30, 80);
+    this.frequencyBand = floor(random(20, 150)); // Banda de frecuencia a la que responde
+    this.yOffset = random(-300, 300); // Para posicionar en diferentes alturas
+    this.xSpeed = random(0.5, 1.5); // Velocidad horizontal
+    this.waveAmplitude = random(20, 80); // Amplitud de la onda
+    this.waveFrequency = random(0.01, 0.05); // Frecuencia de la onda
+  }
+  
+  update(spectrum, level) {
+    // Actualizar la posición basada en la música
+    let freq = spectrum[this.frequencyBand];
+    let mappedFreq = map(freq, 0, 255, 0, 1);
+    
+    // Movimiento fluido horizontal constante
+    this.x += this.xSpeed;
+    
+    // Movimiento ondulatorio vertical más suave y controlado
+    this.y = height/2 + this.yOffset + 
+             sin(this.x * this.waveFrequency) * this.waveAmplitude * (1 + level * 2);
+    
+    // Si la cinta sale del canvas, reiniciar desde la izquierda
+    if (this.x > width + 100) {
+      this.x = -100;
+      this.colorIndex = floor(random(colorPalette.length));
+      this.color = colorPalette[this.colorIndex];
+      this.nextColorIndex = (this.colorIndex + 1) % colorPalette.length;
+      this.nextColor = colorPalette[this.nextColorIndex];
     }
     
-    function loadAudio() {
-      // Ya no necesitamos cargar el audio aquí porque lo hacemos en preload()
-      // Solo configuramos el volumen y marcamos como cargado
-      if (song) {
-        song.setVolume(0.7);
-        loaded = true;
-      } else {
-        console.error("El audio no se cargó correctamente en preload()");
-        alert("No se pudo cargar el audio. Verifica la ruta del archivo.");
-      }
+    // Añadir un nuevo punto a la cinta
+    this.points.push({
+      x: this.x,
+      y: this.y,
+      width: this.baseWidth * (0.8 + mappedFreq * 0.5),
+      alpha: map(mappedFreq, 0, 1, 50, 90),
+      progress: this.points.length / this.maxPoints
+    });
+    
+    // Limitar el número de puntos
+    if (this.points.length > this.maxPoints) {
+      this.points.shift();
     }
     
-    function setupControls() {
-      // Configurar botón de inicio en los controles de reproducción
-      const startBtn = select('#startBtn');
-      startBtn.mousePressed(startAudio);
-    }
+    // Reducir la vida útil más lentamente
+    this.lifespan -= 0.3;
+  }
+  
+  display() {
+    if (this.points.length < 2) return;
     
-    function startAudio() {
-      // Asegurar que el contexto de audio esté activado
-      if (getAudioContext().state !== 'running') {
-        getAudioContext().resume();
-      }
+    // Dibujar la cinta como una forma continua suave
+    noStroke();
+    
+    // Dibujar la cinta con gradientes de color suaves
+    for (let i = 0; i < this.points.length - 1; i++) {
+      let p1 = this.points[i];
+      let p2 = this.points[i + 1];
       
-      if (loaded && song && !song.isPlaying()) {
-        song.play();
-        userStartAudio = true;
-        
-        // Ocultar controles después de iniciar
-        select('#playControls').addClass('hidden');
-      }
+      // Calcular vectores perpendiculares para el ancho de la cinta
+      let angle = atan2(p2.y - p1.y, p2.x - p1.x);
+      let perpAngle = angle + 90;
+      
+      let x1 = p1.x + cos(perpAngle) * p1.width / 2;
+      let y1 = p1.y + sin(perpAngle) * p1.width / 2;
+      let x2 = p1.x - cos(perpAngle) * p1.width / 2;
+      let y2 = p1.y - sin(perpAngle) * p1.width / 2;
+      
+      let x3 = p2.x - cos(perpAngle) * p2.width / 2;
+      let y3 = p2.y - sin(perpAngle) * p2.width / 2;
+      let x4 = p2.x + cos(perpAngle) * p2.width / 2;
+      let y4 = p2.y + sin(perpAngle) * p2.width / 2;
+      
+      // Interpolación de color a lo largo de la cinta y entre colores adyacentes
+      let progressAlongRibbon = map(i, 0, this.points.length - 1, 0, 1);
+      let c1, c2;
+      
+      // Interpolación entre colores de la paleta para un efecto de arcoíris como en imagen 1
+      let colorProgress = (progressAlongRibbon + frameCount * 0.001) % 1;
+      let hue1 = map(colorProgress, 0, 1, hue(this.color), hue(this.nextColor));
+      let hue2 = map(colorProgress + 0.01, 0, 1, hue(this.color), hue(this.nextColor));
+      
+      // Crear colores con saturación y brillo altos para imitar la imagen de referencia
+      c1 = color(hue1, 80, 95, p1.alpha);
+      c2 = color(hue2, 80, 95, p1.alpha);
+
+      // Dibujar el segmento como un quad con gradiente
+      beginShape();
+      fill(c1);
+      vertex(x1, y1);
+      vertex(x2, y2);
+      fill(c2);
+      vertex(x3, y3);
+      vertex(x4, y4);
+      endShape(CLOSE);
+    }
+  }
+}
+
+// Clase para partículas que aparecen en picos de amplitud
+class Particle {
+  constructor() {
+    this.x = random(width);
+    this.y = random(height);
+    this.size = random(3, 15);
+    this.speed = random(1, 3);
+    this.angle = random(360);
+    this.lifespan = 255;
+    this.hue = random(0, 360);
+  }
+  
+  update(level) {
+    // Movimiento basado en ruido de Perlin para suavidad
+    let noiseScale = 0.01;
+    let noiseVal = noise(this.x * noiseScale, this.y * noiseScale, frameCount * 0.01);
+    
+    this.angle += map(noiseVal, 0, 1, -5, 5);
+    
+    // La velocidad se ve afectada por el nivel de audio
+    let speedMod = map(level, 0, 1, 0.5, 2);
+    this.x += cos(this.angle) * this.speed * speedMod;
+    this.y += sin(this.angle) * this.speed * speedMod;
+    
+    // Reducir la vida útil
+    this.lifespan -= 2;
+  }
+  
+  display() {
+    // Efecto de brillo
+    noStroke();
+    for (let i = 3; i > 0; i--) {
+      let alpha = map(i, 0, 3, 0, this.lifespan);
+      fill(this.hue, 80, 100, alpha / 255 * 30);
+      ellipse(this.x, this.y, this.size * i * 1.5);
     }
     
-    function draw() {
-      // Fondo con efecto de desvanecimiento suave
-      background(bgColor[0], bgColor[1], bgColor[2], 15);
-      
-      if (loaded && song && song.isPlaying()) {
-        // Analizar el audio
-        fft.analyze();
-        let bass = fft.getEnergy("bass");
-        let mid = fft.getEnergy("mid");
-        let treble = fft.getEnergy("treble");
-        let highMid = fft.getEnergy("highMid");
-        
-        // Obtener nivel de amplitud
-        let level = amplitude.getLevel();
-        
-        // Visualizar espectro de frecuencias sutilmente
-        drawSpectrum();
-        
-        // Actualizar y dibujar ondas
-        for (let wave of waves) {
-          wave.update(level);
-          wave.display();
-        }
-        
-        // Crear partículas en frecuencias agudas con una probabilidad basada en el nivel
-        if (treble > 200 * sensitivity || highMid > 210 * sensitivity) {
-          let x = random(width);
-          let y = random(height);
-          let size = map(treble, 0, 255, 2, 6) * sensitivity;
-          let lifespan = map(highMid, 0, 255, 80, 200);
-          
-          particles.push(new Particle(x, y, size, lifespan));
-          
-          // Crear algunas partículas adicionales cuando la música es intensa
-          if (level > 0.6 && random() > 0.7) {
-            let bonusX = random(width);
-            let bonusY = random(height);
-            particles.push(new Particle(bonusX, bonusY, size * 0.8, lifespan * 0.7));
-          }
-        }
-        
-        // Actualizar y mostrar partículas
-        for (let i = particles.length - 1; i >= 0; i--) {
-          particles[i].update(level);
-          particles[i].display();
-          
-          if (particles[i].isDead()) {
-            particles.splice(i, 1);
-          }
-        }
-        
-        // Mostrar información de la reproducción
-        showPlaybackInfo();
-      } else {
-        // Mensaje cuando no está reproduciendo (solo si ya está cargado)
-        if (loaded && song && !song.isPlaying() && userStartAudio) {
-          push();
-          fill(0, 0, 0, 180);
-          rect(width/2 - 140, height/2 - 15, 280, 30, 5);
-          fill(255, 200);
-          textAlign(CENTER, CENTER);
-          textSize(18);
-          text("Pausado - Presiona espacio para continuar", width/2, height/2);
-          pop();
-        } else if (loaded && !userStartAudio) {
-          // Solo mostrar mensaje de inicio si no hay controles visibles
-          if (select('#playControls').hasClass('hidden')) {
-            push();
-            fill(0, 0, 0, 180);
-            rect(width/2 - 100, height/2 - 15, 200, 30, 5);
-            fill(255, 200);
-            textAlign(CENTER, CENTER);
-            textSize(18);
-            text("Toca para reproducir", width/2, height/2);
-            pop();
-          }
-        } else if (!loaded) {
-          push();
-          fill(0, 0, 0, 180);
-          rect(width/2 - 100, height/2 - 15, 200, 30, 5);
-          fill(255, 200);
-          textAlign(CENTER, CENTER);
-          textSize(18);
-          text("Cargando audio...", width/2, height/2);
-          pop();
-        }
-      }
-    }
-    
-    function drawSpectrum() {
-      try {
-        // Obtener espectro de frecuencias
-        let spectrum = fft.analyze();
-        
-        // Dibujar forma del espectro muy sutilmente en la parte inferior
-        push();
-        noStroke();
-        fill(red(baseColor), green(baseColor), blue(baseColor), 50);
-        
-        beginShape();
-        vertex(0, height);
-        for (let i = 0; i < spectrum.length; i++) {
-          let x = map(i, 0, spectrum.length, 0, width);
-          let h = map(spectrum[i], 0, 255, 0, 100);
-          vertex(x, height - h);
-        }
-        vertex(width, height);
-        endShape(CLOSE);
-        pop();
-      } catch (e) {
-        console.error("Error al dibujar el espectro:", e);
-      }
-    }
-    
-    function showPlaybackInfo() {
-      // Mostrar tiempo de reproducción
-      if (song && song.isPlaying()) {
-        try {
-          push();
-          fill(255, 100);
-          textAlign(LEFT, TOP);
-          textSize(12);
-          
-          // Formatear tiempo como mm:ss
-          let currentTime = song.currentTime();
-          let minutes = Math.floor(currentTime / 60);
-          let seconds = Math.floor(currentTime % 60);
-          let timeDisplay = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-          
-          text(timeDisplay, 20, 20);
-          pop();
-        } catch (e) {
-          console.error("Error al mostrar tiempo de reproducción:", e);
-        }
-      }
-    }
-    
-    function canvasPressed() {
-      // Función para manejar toques en el canvas
-      if (loaded) {
-        if (song.isPlaying()) {
-          // Cambiar sensibilidad al tocar la pantalla
-          sensitivity = (sensitivity === 1.5) ? 2.0 : (sensitivity === 2.0) ? 1.0 : 1.5;
-          
-          // Mostrar indicador temporal de sensibilidad
-          showSensitivityIndicator();
-        } else {
-          // Primer toque inicia la canción
-          startAudio();
-        }
-      }
-      return false;
-    }
-    
-    function mousePressed() {
-      // No ejecutar este comportamiento si se hizo clic en controles de UI
-      if (isClickingUI()) {
-        return true;
-      }
-      
-      if (loaded) {
-        if (song.isPlaying()) {
-          // Click cambia la sensibilidad
-          sensitivity = (sensitivity === 1.5) ? 2.0 : (sensitivity === 2.0) ? 1.0 : 1.5;
-          
-          // Mostrar indicador temporal de sensibilidad
-          showSensitivityIndicator();
-        } else {
-          // Primer click inicia la canción
-          startAudio();
-        }
-      }
-      return false;
-    }
-    
-    function isClickingUI() {
-      // Comprobar si se está haciendo clic en elementos de la interfaz
-      let playControls = select('#playControls').elt;
-      
-      if (mouseX === 0 && mouseY === 0) {
-        return true; // Probablemente un evento sintético, no un clic real
-      }
-      
-      if (document.elementFromPoint(mouseX, mouseY) === playControls ||
-          playControls.contains(document.elementFromPoint(mouseX, mouseY))) {
-        return true;
-      }
-      
-      return false;
-    }
-    
-    // Manejar pulsaciones de teclas para control adicional
-    function keyPressed() {
-      if (keyCode === 32) { // Barra espaciadora
-        if (loaded) {
-          if (song.isPlaying()) {
-            song.pause();
-          } else {
-            song.play();
-          }
-        }
-      }
-    }
-    
-    function showSensitivityIndicator() {
-      // Mostrar indicador temporal de sensibilidad
-      let sensitivityLevel;
-      if (sensitivity === 1.0) sensitivityLevel = "Baja";
-      else if (sensitivity === 1.5) sensitivityLevel = "Media";
-      else sensitivityLevel = "Alta";
-      
-      push();
-      fill(0, 0, 0, 180);
-      rect(width/2 - 100, height/2 - 15, 200, 30, 5);
-      fill(255, 200);
-      textAlign(CENTER, CENTER);
-      textSize(18);
-      text("Sensibilidad: " + sensitivityLevel, width/2, height/2);
-      pop();
-    }
-    
-    function mouseMoved() {
-      // El movimiento del ratón cambia los colores
-      updateColors(map(mouseX, 0, width, 0, 360));
-    }
-    
-    function updateColors(hue) {
-      // Actualizar esquema de colores basado en el tono
-      colorMode(HSB, 360, 100, 100, 100);
-      baseColor = color(hue, 80, 90, 70);
-      accentColor = color((hue + 180) % 360, 85, 95, 80);
-      
-      // Color de fondo con baja saturación para una atmósfera suave
-      bgColor = [
-        hue > 180 ? 210 : 230, 
-        20, 
-        10, 
-        100
-      ];
-    }
-    
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
-    }
-    
-    class Wave {
-      constructor(offset) {
-        this.offset = offset;
-        this.yOffset = random(1000);
-        this.speed = random(0.005, 0.02);
-        this.amplitude = random(20, 60);
-        this.wavelength = random(0.005, 0.02);
-        this.points = [];
-      }
-      
-      update(level) {
-        this.amplitude = map(level, 0, 1, 20, 80);
-        this.yOffset += this.speed;
-      }
-      
-      display() {
-        push();
-        noFill();
-        stroke(baseColor);
-        strokeWeight(2);
-        
-        beginShape();
-        for (let x = 0; x < width + 10; x += 10) {
-          let y = height / 2 + 
-                 sin(x * this.wavelength + this.yOffset) * this.amplitude + 
-                 cos(x * this.wavelength * 0.8 + this.yOffset + this.offset) * this.amplitude * 0.5;
-                 
-          vertex(x, y);
-          
-          // Guardar puntos para partículas
-          this.points[floor(x/10)] = {x: x, y: y};
-        }
-        endShape();
-        pop();
-      }
-      
-      getRandomPoint() {
-        if (this.points.length > 0) {
-          return this.points[floor(random(this.points.length))];
-        }
-        return {x: random(width), y: random(height)};
-      }
-    }
-    
-    class Particle {
-      constructor(x, y, size, lifespan) {
-        this.pos = createVector(x, y);
-        this.vel = createVector(random(-0.5, 0.5), random(-0.5, 0.5));
-        this.acc = createVector(0, 0);
-        this.size = size;
-        this.maxSize = size;
-        this.lifespan = lifespan;
-        this.maxLife = lifespan;
-        this.angle = random(TWO_PI);
-        this.rotSpeed = random(-0.05, 0.05);
-      }
-      
-      update(level) {
-        // Añadir un poco de movimiento aleatorio
-        let randomForce = p5.Vector.random2D();
-        randomForce.mult(0.05);
-        this.acc.add(randomForce);
-        
-        // Aplicar una fuerza suave hacia el centro
-        let center = createVector(width/2, height/2);
-        let dir = p5.Vector.sub(center, this.pos);
-        dir.normalize();
-        dir.mult(0.02);
-        this.acc.add(dir);
-        
-        // Responder al nivel de audio
-        this.vel.add(this.acc);
-        this.vel.mult(0.98 + level * 0.1);
-        this.pos.add(this.vel);
-        this.acc.mult(0);
-        
-        // Actualizar ángulo y vida
-        this.angle += this.rotSpeed * (1 + level);
-        this.lifespan -= 1 + random(0.5);
-        
-        // La partícula crece con el audio y luego disminuye con el tiempo
-        this.size = map(this.lifespan, this.maxLife, 0, this.maxSize, 0) * (1 + level * 2);
-      }
-      
-      display() {
-        push();
-        translate(this.pos.x, this.pos.y);
-        rotate(this.angle);
-        
-        // Dibujar partícula con brillo
-        noStroke();
-        let alpha = map(this.lifespan, 0, this.maxLife, 0, 100);
-        
-        // Efecto de resplandor
-        fill(red(accentColor), green(accentColor), blue(accentColor), alpha * 0.2);
-        ellipse(0, 0, this.size * 3, this.size * 3);
-        
-        fill(red(accentColor), green(accentColor), blue(accentColor), alpha * 0.6);
-        ellipse(0, 0, this.size * 1.5, this.size * 1.5);
-        
-        fill(red(accentColor), green(accentColor), blue(accentColor), alpha);
-        ellipse(0, 0, this.size, this.size);
-        
-        pop();
-      }
-      
-      isDead() {
-        return this.lifespan <= 0;
-        
-      }
-    }
-  </script>
-</body>
-</html>
+    // Centro de la partícula
+    fill(this.hue, 30, 100, this.lifespan);
+    ellipse(this.x, this.y, this.size);
+  }
+}
+
+function mousePressed() {
+  // Toggle reproducción/pausa al hacer clic
+  if (song.isPlaying()) {
+    song.pause();
+  } else {
+    song.play();
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+
+Ondas 
+
+let song;
+let fft;
+let phase = 0; // Fase inicial para la onda
+let amplitude = 100; // Amplitud de la onda
+let frequency = 0.01; // Frecuencia de la onda
+let speed = 0.05; // Velocidad de la fase para animar la onda
+
+function setup() {
+  createCanvas(400, 400);
+  song = loadSound('Piano.mp3', startSound); // Asegúrate de tener el archivo 'song.mp3'
+  fft = new p5.FFT();
+  stroke(255);
+  noFill();
+}
+
+function startSound() {
+  song.play();
+}
+
+function draw() {
+  background(0);
+
+  // Obtener la forma de onda del sonido
+  let waveform = fft.waveform();
+
+  // Dibujar la onda senoidal
+  beginShape();
+  for (let x = 0; x < width; x++) {
+    // Modificar la forma de la onda dependiendo de la música
+    let y = height / 2 + waveform[x % waveform.length] * amplitude; // Usar la onda del sonido
+    vertex(x, y);
+  }
+  endShape();
+
+  // Animar la onda senoidal con la fase
+  phase += speed; // Cambiar la fase para mover la onda
+}
