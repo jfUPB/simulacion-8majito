@@ -1,3 +1,4 @@
+```js
 let song;
 let fft;
 let amplitude;
@@ -437,10 +438,10 @@ function mousePressed() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
-
+```
 
 Ondas 
-
+```js
 let song;
 let fft;
 let phase = 0; // Fase inicial para la onda
@@ -478,3 +479,4 @@ function draw() {
   // Animar la onda senoidal con la fase
   phase += speed; // Cambiar la fase para mover la onda
 }
+```js
