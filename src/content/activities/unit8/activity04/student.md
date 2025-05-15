@@ -660,14 +660,14 @@ function windowResized() {
 }
 ```
 
-Intneto mil 
+**Intneto mil**
 ```js
 let waves = [];
-let numWaves = 5;  // Reducido de 8 a 5 ondas
+let numWaves = 5;  // Número fijo de ondas
 let numPoints;
 let time = 0;
 let particles = [];
-let maxParticles = 100;  // Limitar el número máximo de partículas
+let maxParticles = 100;
 
 // Variables para el audio
 let song;
@@ -677,21 +677,19 @@ let loaded = false;
 let isPlaying = false;
 
 // Bandas de frecuencia para analizar
-let bass, lowMid, mid, highMid, treble;
+let bass, mid;
 
-// Variables para controles de usuario
+// Variables fijas
 let volumeSensitivity = 1.0;
 let colorPalette = 0;
-let showParticles = true;  // Opción para desactivar partículas
-let quality = 1;  // Factor de calidad: 1=normal, 2=baja (menos puntos)
+let quality = 1;  // Calidad fija alta (sin cambio)
 
-// Cargar el archivo de audio antes de iniciar
+// Cargar audio antes de iniciar
 function preload() {
   soundFormats('mp3');
   song = loadSound('Piano.mp3',
     function () {
       loaded = true;
-      console.log('Audio cargado correctamente');
     },
     function (err) {
       console.error('Error al cargar el audio:', err);
@@ -701,42 +699,15 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  numPoints = floor(width / (10 * quality));  // Menos puntos en calidad baja
+  numPoints = floor(width / (10 * quality));
 
-  // Configuración del análisis de audio
-  fft = new p5.FFT(0.8, 512);  // Reducido de 1024 a 512 bins
+  fft = new p5.FFT(0.8, 512);
   amplitude = new p5.Amplitude();
 
-  // Inicializar ondas
   initializeWaves();
   noFill();
 
-  // Agregar interfaz
   createPlayButton();
-  createControlsInfo();
-  createPerformanceControls();
-}
-
-function createPerformanceControls() {
-  // Botón para alternar partículas
-  let particlesBtn = createButton('Partículas: ON');
-  particlesBtn.position(20, 60);
-  particlesBtn.mousePressed(function() {
-    showParticles = !showParticles;
-    particlesBtn.html(showParticles ? 'Partículas: ON' : 'Partículas: OFF');
-  });
-  particlesBtn.class('play-button');
-  
-  // Botón para cambiar calidad
-  let qualityBtn = createButton('Calidad: Alta');
-  qualityBtn.position(20, 100);
-  qualityBtn.mousePressed(function() {
-    quality = quality === 1 ? 2 : 1;
-    qualityBtn.html(quality === 1 ? 'Calidad: Alta' : 'Calidad: Baja');
-    numPoints = floor(width / (10 * quality));
-    initializeWaves();
-  });
-  qualityBtn.class('play-button');
 }
 
 function initializeWaves() {
@@ -759,7 +730,7 @@ function createPlayButton() {
   playBtn.mousePressed(togglePlay);
   playBtn.class('play-button');
 
-  // Estilo básico para el botón
+  // Estilos mínimos para botón
   let styles = `
     .play-button {
       padding: 10px 20px;
@@ -769,20 +740,11 @@ function createPlayButton() {
       font-size: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
+      z-index: 10;
+      position: fixed;
     }
     .play-button:hover {
       background-color: rgba(255, 220, 150, 0.9);
-    }
-    .controls-info {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      color: rgba(255, 255, 255, 0.7);
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      border-radius: 5px;
     }
   `;
 
@@ -791,19 +753,8 @@ function createPlayButton() {
   document.head.appendChild(styleEl);
 }
 
-function createControlsInfo() {
-  let infoDiv = createDiv(
-    '🎮 Controles:<br>' +
-    '• Mouse X: Cambiar paleta de colores<br>' +
-    '• Flechas ↑↓: Ajustar sensibilidad al volumen<br>' +
-    '• Tecla R: Reiniciar visualización'
-  );
-  infoDiv.class('controls-info');
-}
-
 function togglePlay() {
   if (!loaded) {
-    console.log('El audio aún no se ha cargado');
     return;
   }
 
@@ -822,21 +773,16 @@ function draw() {
   background(0, 30);
   blendMode(BLEND);
 
-  // Actualizar la paleta de colores según mouseX
   updateColorPalette();
 
-  // Análisis del audio si está reproduciéndose
   if (isPlaying) {
     analyzeAudio();
   }
 
-  // Actualizar ondas
   for (let w of waves) {
     w.update();
   }
 
-  // Dibujar capas suaves debajo de cada onda para volumen y sensación de tela
-  // Solo dibujar una capa para mejorar rendimiento
   noStroke();
   for (let w of waves) {
     fill(red(w.color1), green(w.color1), blue(w.color1), 15);
@@ -849,7 +795,6 @@ function draw() {
     endShape(CLOSE);
   }
 
-  // Dibujar líneas de las ondas
   strokeWeight(2);
   for (let w of waves) {
     noFill();
@@ -863,338 +808,157 @@ function draw() {
     endShape();
   }
 
-  // Manejar partículas solo si están activadas
-  if (showParticles) {
-    // Emitir partículas desde las ondas (menos frecuentemente)
-    if (frameCount % 3 === 0) {  // Reducido de cada frame a cada 3 frames
-      for (let w of waves) {
-        w.emitParticles(particles);
-      }
+  // Emitir partículas siempre
+  if (frameCount % 3 === 0) {
+    for (let w of waves) {
+      w.emitParticles(particles);
     }
+  }
 
-    // Limitar partículas para evitar sobrecarga
-    while (particles.length > maxParticles) {
-      particles.shift();  // Eliminar las más antiguas
-    }
+  // Limitar partículas para rendimiento
+  while (particles.length > maxParticles) {
+    particles.shift();
+  }
 
-    // Agregar destellos con menos frecuencia
-    if (isPlaying && frameCount % 10 === 0) {  // Menos frecuente
-      let x = random(width);
-      let y = random(height / 2, height);
-      particles.push(new SparkleParticle(x, y));
-    } else if (!isPlaying && frameCount % 15 === 0) {  // Menos frecuente
-      let x = random(width);
-      let y = random(height / 2, height);
-      particles.push(new SparkleParticle(x, y));
-    }
+  if (frameCount % 10 === 0) {
+    let x = random(width);
+    let y = random(height / 2, height);
+    particles.push(new SparkleParticle(x, y));
+  }
 
-    // Actualizar y mostrar partículas
-    for (let i = particles.length - 1; i >= 0; i--) {
-      particles[i].followWave?.();
-      particles[i].update();
-      
-      // Reducir uso de sombras (causa mayor impacto en rendimiento)
-      if (frameCount % 2 === 0 && particles[i].isSparkle) {  // Solo aplicar a destellos y cada 2 frames
-        drawingContext.shadowBlur = 10;  // Valor reducido
-        drawingContext.shadowColor = 'rgba(255,180,80,0.8)';
-      }
-      
-      particles[i].show();
-      
-      if (frameCount % 2 === 0 && particles[i].isSparkle) {
-        drawingContext.shadowBlur = 0;
-        drawingContext.shadowColor = 'transparent';
-      }
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].followWave?.();
+    particles[i].update();
+    particles[i].show();
 
-      if (particles[i].isOffScreen()) {
-        particles.splice(i, 1);
-      }
+    if (particles[i].isOffScreen()) {
+      particles.splice(i, 1);
     }
   }
 
   time += 0.02;
-
-  // Mostrar información
-  displayInfo();
 }
 
-// Mostrar toda la información
-function displayInfo() {
-  fill(255, 255, 255, 150);
-  noStroke();
-  textSize(14);
-  textAlign(RIGHT);
-  text(`Sensibilidad: ${volumeSensitivity.toFixed(1)}`, width - 20, 40);
-  text(`Paleta: ${colorPalette + 1}/3`, width - 20, 60);
-  text(`FPS: ${floor(frameRate())}`, width - 20, 80);
-  text(`Partículas: ${particles.length}/${maxParticles}`, width - 20, 100);
-}
-
-// Actualizar paleta de colores basada en la posición del mouse
+// Actualiza la paleta de colores según el mouseX
 function updateColorPalette() {
-  // Dividir la pantalla en 3 zonas de color
-  colorPalette = floor(map(mouseX, 0, width, 0, 3));
-
-  // Actualizar colores de ondas según la paleta seleccionada
-  for (let i = 0; i < waves.length; i++) {
-    let w = waves[i];
-
-    switch (colorPalette) {
-      case 0: // Paleta cálida (naranja/rojo)
-        w.color1 = color(255, 200 - i * 40, 100 - i * 20, 180);
-        w.color2 = color(255, 120 - i * 30, 80 - i * 10, 100);
-        break;
-      case 1: // Paleta fría (azul/violeta)
-        w.color1 = color(100 - i * 20, 150 - i * 20, 255 - i * 10, 180);
-        w.color2 = color(80 - i * 10, 100 - i * 10, 240 - i * 20, 100);
-        break;
-      case 2: // Paleta verde/amarillo
-        w.color1 = color(150 + i * 20, 255 - i * 20, 100 - i * 10, 180);
-        w.color2 = color(100 + i * 10, 200 - i * 20, 50 - i * 10, 100);
-        break;
+  let zone = floor(map(mouseX, 0, width, 0, 3));
+  if (zone !== colorPalette) {
+    colorPalette = zone;
+    for (let i = 0; i < waves.length; i++) {
+      let baseHue = 30 + i * 40 + colorPalette * 60;
+      waves[i].color1 = color(baseHue, 200, 200, 180);
+      waves[i].color2 = color(baseHue + 20, 150, 150, 100);
     }
   }
 }
 
-// Función para manejar teclas
-function keyPressed() {
-  // Ajustar sensibilidad con flechas arriba/abajo
-  if (keyCode === UP_ARROW) {
-    volumeSensitivity = constrain(volumeSensitivity + 0.1, 0.1, 3.0);
-  } else if (keyCode === DOWN_ARROW) {
-    volumeSensitivity = constrain(volumeSensitivity - 0.1, 0.1, 3.0);
-  }
-
-  // Reiniciar visualización con tecla R
-  if (key === 'r' || key === 'R') {
-    particles = [];
-    time = 0;
-    initializeWaves();
-  }
-}
-
-// Función para analizar el audio y actualizar las variables globales
+// Análisis de audio: amplitud con bass y frecuencia con mid
 function analyzeAudio() {
   fft.analyze();
+  bass = fft.getEnergy("bass");
+  mid = fft.getEnergy("mid");
 
-  // Obtener valores de diferentes rangos de frecuencia (0-1)
-  bass = fft.getEnergy("bass") / 255;
-  lowMid = fft.getEnergy("lowMid") / 255;
-  mid = fft.getEnergy("mid") / 255;
-  highMid = fft.getEnergy("highMid") / 255;
-  treble = fft.getEnergy("treble") / 255;
-
-  // Volumen general
-  let level = amplitude.getLevel();
-
-  // Ajustar la velocidad del tiempo basado en el nivel de audio y sensibilidad
-  time += 0.01 + level * 0.03 * volumeSensitivity;
+  for (let i = 0; i < waves.length; i++) {
+    waves[i].amplitude = 40 + bass / 5 + i * 10;
+    waves[i].freqMod = map(mid, 0, 255, 1.5, 3.5);
+  }
 }
 
+// Clase Wave
 class Wave {
-  constructor(color1, color2, yOffset, amplitude, noiseAmp) {
+  constructor(color1, color2, yOffset, amplitude, noiseFactor) {
     this.color1 = color1;
     this.color2 = color2;
     this.yOffset = yOffset;
     this.amplitude = amplitude;
-    this.noiseAmp = noiseAmp;
+    this.noiseFactor = noiseFactor;
     this.points = [];
-    this.responseFactor = random(0.5, 1.5);
+    this.freqMod = 2; // frecuencia base para oscilación
   }
 
   update() {
     this.points = [];
-
-    // Usar audio para afectar las ondas si está reproduciéndose
-    let audioFactor = 1;
-    let breathingSpeed = 0.5;
-    let waveSpeed = 0.8;
-
-    if (isPlaying) {
-      // Las ondas superiores responden más a agudos, las inferiores a graves
-      let yPosition = map(this.yOffset, height / 2 - 120, height / 2 + 480, 0, 1);
-
-      // Las ondas más altas responden a frecuencias más altas
-      let freqResponse = map(yPosition, 0, 1, bass + lowMid, mid + highMid + treble);
-
-      // Ajustar amplitud basada en la energía de frecuencia correspondiente y sensibilidad
-      audioFactor = 1 + freqResponse * 2 * this.responseFactor * volumeSensitivity;
-
-      // Velocidad de "respiración" basada en ritmo bajo
-      breathingSpeed = 0.5 + bass * 0.5 * volumeSensitivity;
-
-      // Velocidad de movimiento ondulatorio basada en frecuencias medias
-      waveSpeed = 0.8 + mid * 0.8 * volumeSensitivity;
-    }
-
-    let breathing = sin(time * breathingSpeed + this.yOffset) * 10 * audioFactor;
-    let step = 10 * quality;  // Paso más grande en calidad baja
-
-    for (let x = 0; x <= width; x += step) {
-      let y = this.yOffset + breathing +
-        sin(x * 0.01 + time * waveSpeed + this.yOffset * 0.002) * this.amplitude * audioFactor +
-        noise(x * 0.003 + this.yOffset * 0.005, time * 0.1 + this.yOffset * 0.002) * this.noiseAmp;
+    for (let i = 0; i <= numPoints; i++) {
+      let x = map(i, 0, numPoints, 0, width);
+      let n = noise(i * 0.1, time);
+      let y = this.yOffset + this.amplitude * sin(TWO_PI * i / numPoints * this.freqMod + time * 2) + this.noiseFactor * n;
       this.points.push({ x, y });
     }
   }
 
-  getPointAndAngleAt(x) {
-    let step = 10 * quality;
-    let idx = floor(x / step);
-    idx = constrain(idx, 0, this.points.length - 2);
-    let p1 = this.points[idx];
-    let p2 = this.points[idx + 1];
-    let inter = map(x, p1.x, p2.x, 0, 1);
-    let y = lerp(p1.y, p2.y, inter);
-    let angle = atan2(p2.y - p1.y, p2.x - p1.x);
-    return { y, angle };
-  }
-
-  emitParticles(particleArray) {
-    // Menos partículas en general y especialmente en calidad baja
-    let emissionFreq = isPlaying ? 15 : 20;
-    
-    if (frameCount % emissionFreq === 0) {
-      let particleCount = isPlaying ? 1 : 1;
-      
-      // Emitir partículas con menos frecuencia
-      for (let i = 0; i < this.points.length; i += 40) {  // Reducido de 20 a 40
-        if (i < this.points.length) {
-          let p = this.points[i];
-          particleArray.push(new WaveParticle(p.x, p.y, this, true));
-        }
-      }
+  emitParticles(particlesArray) {
+    if (random() < 0.3) {
+      let index = floor(random(this.points.length));
+      let p = this.points[index];
+      particlesArray.push(new WaveParticle(p.x, p.y, this));
     }
   }
 }
 
+// Partículas que siguen las ondas
 class WaveParticle {
-  constructor(x, y, wave, floatsUp) {
-    this.x = x;
-    this.y = y;
+  constructor(x, y, wave) {
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.3, 1));
+    this.acc = createVector(0, 0);
+    this.lifespan = 255;
     this.wave = wave;
-    this.floatsUp = floatsUp;
-    this.size = random(1, 3);
-    this.alpha = 255;
+    this.size = random(3, 6);
+  }
 
-    // La velocidad de las partículas puede ser afectada por el audio
-    this.baseSpeed = random(0.5, 1.5);
-    this.speed = this.baseSpeed;
-    this.isSparkle = false;
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.lifespan -= 3;
+  }
+
+  applyForce(force) {
+    this.acc.add(force);
   }
 
   followWave() {
-    // Ajustar velocidad basada en la música si está reproduciéndose
-    if (isPlaying) {
-      this.speed = this.baseSpeed * (1 + mid * 1.5 * volumeSensitivity);
-    } else {
-      this.speed = this.baseSpeed;
-    }
-
-    let pos = this.wave.getPointAndAngleAt(this.x);
-    this.y = lerp(this.y, pos.y, 0.1);
-    let dir = this.floatsUp ? -1 : 1;
-    this.x += cos(pos.angle) * this.speed;
-    this.y += sin(pos.angle) * this.speed * dir;
-
-    // Decaimiento más rápido para evitar acumulación
-    let alphaDecay = 2.5;
-    this.alpha -= alphaDecay;
-  }
-
-  update() {
-    this.x += random(-0.1, 0.1);
-    this.y += random(-0.1, 0.1);
-    this.alpha -= 1.5;  // Más rápido
+    let closestX = constrain(this.pos.x, 0, width);
+    let i = floor(map(closestX, 0, width, 0, this.wave.points.length - 1));
+    let targetY = this.wave.points[i].y + 15;
+    let forceY = (targetY - this.pos.y) * 0.02;
+    this.applyForce(createVector(0, forceY));
   }
 
   show() {
     noStroke();
-
-    // Color básico según paleta
-    let particleR, particleG, particleB;
-    
-    switch (colorPalette) {
-      case 0: // Paleta cálida
-        particleR = 255;
-        particleG = 200;
-        particleB = 150;
-        break;
-      case 1: // Paleta fría
-        particleR = 150;
-        particleG = 180;
-        particleB = 255;
-        break;
-      case 2: // Paleta verde/amarillo
-        particleR = 200;
-        particleG = 255;
-        particleB = 150;
-        break;
-    }
-
-    fill(particleR, particleG, particleB, this.alpha * 0.6);
-    ellipse(this.x, this.y, this.size);
+    fill(255, 150, 100, this.lifespan);
+    ellipse(this.pos.x, this.pos.y, this.size);
   }
 
   isOffScreen() {
-    return (this.x < -10 || this.x > width + 10 || this.y < -10 || this.y > height + 10 || this.alpha <= 0);
+    return this.lifespan <= 0 || this.pos.x < 0 || this.pos.x > width || this.pos.y > height || this.pos.y < 0;
   }
 }
 
-// Clase para destellos flotantes brillantes (simplificada)
+// Partículas brillantes aleatorias
 class SparkleParticle {
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.size = isPlaying ? random(2, 4) : random(2, 4);
-    this.alpha = random(100, 200);
+    this.pos = createVector(x, y);
+    this.vel = p5.Vector.random2D().mult(random(0.5, 2));
+    this.lifespan = 200;
+    this.size = random(4, 8);
     this.isSparkle = true;
-    this.life = random(20, 40);  // Vida más corta
-    this.maxLife = this.life;
-
-    // Color base del destello según la paleta (simplificado)
-    switch (colorPalette) {
-      case 0: // Cálida
-        this.colorR = 255;
-        this.colorG = 220;
-        this.colorB = 150;
-        break;
-      case 1: // Fría
-        this.colorR = 150;
-        this.colorG = 200;
-        this.colorB = 255;
-        break;
-      case 2: // Verde/amarillo
-        this.colorR = 220;
-        this.colorG = 255;
-        this.colorB = 150;
-        break;
-    }
   }
 
   update() {
-    this.alpha = map(this.life, 0, this.maxLife, 0, 200);
-    this.life -= 2;  // Decrementar más rápido
-    
-    // Movimiento simplificado
-    this.x += random(-0.2, 0.2);
-    this.y += random(-0.2, 0.2);
+    this.pos.add(this.vel);
+    this.lifespan -= 6;
   }
 
   show() {
     noStroke();
-    fill(this.colorR, this.colorG, this.colorB, this.alpha);
-    ellipse(this.x, this.y, this.size);
+    fill(255, 180, 80, this.lifespan);
+    ellipse(this.pos.x, this.pos.y, this.size);
   }
 
   isOffScreen() {
-    return this.life <= 0 || this.alpha <= 0;
+    return this.lifespan <= 0;
   }
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-  numPoints = floor(width / (10 * quality));
-  initializeWaves();
 }
 ```
