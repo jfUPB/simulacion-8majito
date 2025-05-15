@@ -26,8 +26,11 @@ Usaré la energía de distintas bandas para activar diferentes efectos:
 *4. Define inputs de interacción*
 
 Además del audio, el usuario podrá interactuar de las siguientes formas:
-- Mouse: Al hacer clic, cambiará la paleta de colores (por ejemplo, de tonos cálidos a fríos).
+- Mouse: Al mover el mouse, cambiará la paleta de colores (por ejemplo, de tonos cálidos a fríos).
 - Teclado:
-  - Teclas de flechas ↑↓ ajustarán la sensibilidad al volumen (amplitud), haciendo que la animación sea más o menos reactiva.
+  - Solo flecha arriba → cambia la sensibilidad del volumen (más partículas/destellos).
+  - Solo flecha abajo → disminuye la sensibilidad del volumen.
+  - Shift + flecha arriba → aumenta la amplitud de las olas.
+  - Shift + flecha abajo → disminuye la amplitud de las olas.
   - Tecla r reiniciará la escena visual, limpiando las partículas acumuladas.
 
