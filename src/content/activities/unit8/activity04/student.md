@@ -442,41 +442,220 @@ function windowResized() {
 
 Ondas 
 ```js
-let song;
-let fft;
-let phase = 0; // Fase inicial para la onda
-let amplitude = 100; // Amplitud de la onda
-let frequency = 0.01; // Frecuencia de la onda
-let speed = 0.05; // Velocidad de la fase para animar la onda
+let waves = [];
+let numWaves = 8;
+let numPoints;
+let time = 0;
+let particles = [];
 
 function setup() {
-  createCanvas(400, 400);
-  song = loadSound('Piano.mp3', startSound); // Asegúrate de tener el archivo 'song.mp3'
-  fft = new p5.FFT();
-  stroke(255);
+  createCanvas(windowWidth, windowHeight);
+  numPoints = width / 10;
+
+  for (let i = 0; i < numWaves; i++) {
+    let c1 = color(255, 200 - i * 40, 100 - i * 20, 180);
+    let c2 = color(255, 120 - i * 30, 80 - i * 10, 100);
+
+    let yOffset = height / 2 + (i - 1.5) * 80;
+    let amplitude = 40 + i * 15;
+    let noiseFactor = 50 - i * 8;
+
+    waves.push(new Wave(c1, c2, yOffset, amplitude, noiseFactor));
+  }
+
   noFill();
 }
 
-function startSound() {
-  song.play();
+function draw() {
+  background(0, 30);
+  blendMode(BLEND);
+
+  // Actualizar ondas
+  for (let w of waves) {
+    w.update();
+  }
+
+  // Dibujar capas suaves debajo de cada onda para volumen y sensación de tela
+  noStroke();
+  for (let w of waves) {
+    for (let layer = 0; layer < 3; layer++) {
+      fill(red(w.color1), green(w.color1), blue(w.color1), 15 - layer * 5);
+      beginShape();
+      vertex(0, height);
+      for (let p of w.points) {
+        vertex(p.x, p.y + 15 + layer * 5);
+      }
+      vertex(width, height);
+      endShape(CLOSE);
+    }
+  }
+
+  // Dibujar líneas de las ondas con curvas suaves y gradientes alpha variable
+  strokeWeight(2);
+  for (let w of waves) {
+    noFill();
+    beginShape();
+    for (let i = 0; i < w.points.length; i++) {
+      let p = w.points[i];
+      let interC = lerpColor(w.color1, w.color2, map(i, 0, w.points.length - 1, 0, 1));
+      stroke(red(interC), green(interC), blue(interC), 150);
+      curveVertex(p.x, p.y);
+    }
+    endShape();
+  }
+
+  // Emitir partículas desde las ondas
+  for (let w of waves) {
+    w.emitParticles(particles);
+  }
+
+  // Agregar partículas extra tipo destello dispersas aleatoriamente (destellos "flotantes")
+  if (frameCount % 5 === 0) {
+    let x = random(width);
+    let y = random(height / 2, height);
+    particles.push(new SparkleParticle(x, y));
+  }
+
+  // Actualizar y mostrar partículas con glow y movimiento suave
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].followWave?.();
+    particles[i].update();
+
+    // Para destellos y partículas normales, brillo pulsante
+    drawingContext.shadowBlur = particles[i].isSparkle ? 20 + 10 * sin(time * 20 + i) : 12;
+    drawingContext.shadowColor = particles[i].isSparkle ? 'rgba(255, 220, 120, 0.9)' : 'rgba(255,180,80,0.8)';
+
+    particles[i].show();
+
+    drawingContext.shadowBlur = 0;
+    drawingContext.shadowColor = 'transparent';
+
+    if (particles[i].isOffScreen()) {
+      particles.splice(i, 1);
+    }
+  }
+
+  time += 0.02;
 }
 
-function draw() {
-  background(0);
-
-  // Obtener la forma de onda del sonido
-  let waveform = fft.waveform();
-
-  // Dibujar la onda senoidal
-  beginShape();
-  for (let x = 0; x < width; x++) {
-    // Modificar la forma de la onda dependiendo de la música
-    let y = height / 2 + waveform[x % waveform.length] * amplitude; // Usar la onda del sonido
-    vertex(x, y);
+class Wave {
+  constructor(color1, color2, yOffset, amplitude, noiseAmp) {
+    this.color1 = color1;
+    this.color2 = color2;
+    this.yOffset = yOffset;
+    this.amplitude = amplitude;
+    this.noiseAmp = noiseAmp;
+    this.points = [];
   }
-  endShape();
 
-  // Animar la onda senoidal con la fase
-  phase += speed; // Cambiar la fase para mover la onda
+  update() {
+    this.points = [];
+    let breathing = sin(time * 0.5 + this.yOffset) * 10;
+    for (let x = 0; x <= width; x += 10) {
+      let y = this.yOffset + breathing +
+                sin(x * 0.01 + time * 0.8 + this.yOffset * 0.002) * this.amplitude +
+                noise(x * 0.003 + this.yOffset * 0.005, time * 0.1 + this.yOffset * 0.002) * this.noiseAmp;
+      this.points.push({ x, y });
+    }
+  }
+
+  getPointAndAngleAt(x) {
+    let idx = floor(x / 10);
+    idx = constrain(idx, 0, this.points.length - 2);
+    let p1 = this.points[idx];
+    let p2 = this.points[idx + 1];
+    let inter = map(x, p1.x, p2.x, 0, 1);
+    let y = lerp(p1.y, p2.y, inter);
+    let angle = atan2(p2.y - p1.y, p2.x - p1.x);
+    return { y, angle };
+  }
+
+  emitParticles(particleArray) {
+    let freq = 5;
+    if (frameCount % freq === 0) {
+      for (let i = 0; i < this.points.length; i += 20) {
+        let p = this.points[i];
+        particleArray.push(new WaveParticle(p.x, p.y, this, true));
+        particleArray.push(new WaveParticle(p.x + random(-5, 5), p.y, this, false));
+      }
+    }
+  }
+}
+
+class WaveParticle {
+  constructor(x, y, wave, floatsUp) {
+    this.x = x;
+    this.y = y;
+    this.wave = wave;
+    this.floatsUp = floatsUp;
+    this.size = random(1, 3);
+    this.alpha = 255;
+    this.speed = random(0.5, 1.5);
+    this.isSparkle = false;
+  }
+
+  followWave() {
+    let pos = this.wave.getPointAndAngleAt(this.x);
+    this.y = lerp(this.y, pos.y, 0.1);
+    let dir = this.floatsUp ? -1 : 1;
+    this.x += cos(pos.angle) * this.speed;
+    this.y += sin(pos.angle) * this.speed * dir;
+    this.alpha -= 1.5;
+  }
+
+  update() {
+    this.x += random(-0.1, 0.1);
+    this.y += random(-0.1, 0.1);
+    this.alpha -= 0.7;
+  }
+
+  show() {
+    noStroke();
+    fill(255, 200, 150, this.alpha * 0.6);
+    ellipse(this.x, this.y, this.size * 0.7);
+  }
+
+  isOffScreen() {
+    return (this.x < -10 || this.x > width + 10 || this.y < -50 || this.y > height + 50 || this.alpha <= 0);
+  }
+}
+
+// Nueva clase para destellos flotantes brillantes
+class SparkleParticle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = random(2, 5);
+    this.alpha = random(100, 255);
+    this.isSparkle = true;
+    this.life = random(40, 80);
+    this.maxLife = this.life;
+  }
+
+  update() {
+    this.alpha = map(this.life, 0, this.maxLife, 0, 255);
+    this.life--;
+    // Pequeño movimiento aleatorio
+    this.x += random(-0.2, 0.2);
+    this.y += random(-0.2, 0.2);
+  }
+
+  show() {
+    noStroke();
+    // Brillo pulsante
+    let glowSize = this.size + 3 * sin(time * 20);
+    fill(255, 255, 200, this.alpha);
+    ellipse(this.x, this.y, glowSize);
+    fill(255, 255, 220, this.alpha);
+    ellipse(this.x, this.y, glowSize * 0.5);
+  }
+
+  isOffScreen() {
+    return this.life <= 0 || this.alpha <= 0;
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
 ```js
