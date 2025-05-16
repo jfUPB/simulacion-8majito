@@ -1,0 +1,8 @@
+#### ¿Qué desafíos encontraste al aplicar los conceptos aprendidos? 
+- Comprensión de las fuerzas en sistemas interactivos, ya que son conceptos muy teoricos y uno solo lo ve como matematicamnete. Al principio, las fuerzas como la gravedad, la fricción o el viento se sentían más como ecuaciones que como elementos dinámicos dentro de una simulación y como nos pueden ayudar con la creatividad de nuestras aplicaciones.
+- Manejo de fuerzas y estabilidad del sistema:  Uno de los principales retos fue equilibrar las fuerzas físicas (gravedad, viento, fricción y atracción entre partículas) para evitar que las partículas se movieran de forma caótica o artificial. Aprendí que ajustar la magnitud de las fuerzas y limitar su alcance es clave para mantener la estabilidad. Ejemplo: al principio, la atracción entre partículas era demasiado fuerte, lo que hacía que se agruparan en exceso; ajustando los límites de distancia, se logro un efecto más realista.
+- La atraccion gravitacional: Generalmente, asociamos la gravedad con el movimiento de planetas alrededor del Sol, lo que hacía difícil visualizar su aplicación en otros contextos. 
+
+#### ¿Qué aprendiste de estos desafíos?
+
+El desarrollo de esta simulación y de toda la Unidad nos mostró que conceptos físicos pueden utilizarse de maneras inesperadas en el diseño de experiencias interactivas. Más allá de su ecuaciones y formulas matemáticas, comprender la interacción entre fuerzas me ayudó a generar efectos visuales y dinámicos más atractivos y a hacer que nuestro sistema se sintiera más orgánico. Además, la interactividad permitió modificar parámetros en tiempo real.

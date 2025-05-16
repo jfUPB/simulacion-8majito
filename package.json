@@ -10,8 +10,9 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.31.0",
-    "astro": "^5.1.6",
+    "@astrojs/starlight": "^0.32.3",
+    "@babel/runtime": "^7.26.10",
+    "astro": "^5.5.3",
     "p5": "^1.11.2",
     "sharp": "^0.32.5"
   },
